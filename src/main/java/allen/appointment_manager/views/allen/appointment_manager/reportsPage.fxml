@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="739.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.ReportsPageController">
+   <children>
+      <TableView fx:id="recordsTable" layoutX="22.0" layoutY="493.0" prefHeight="200.0" prefWidth="1017.0">
+        <columns>
+          <TableColumn prefWidth="95.0" text="Appointment ID" />
+          <TableColumn minWidth="0.0" prefWidth="0.0" text="Title" />
+            <TableColumn minWidth="0.0" prefWidth="193.0" text="Description" />
+            <TableColumn minWidth="0.0" prefWidth="68.0" text="Location" />
+            <TableColumn prefWidth="101.0" text="Contact" />
+            <TableColumn minWidth="0.0" prefWidth="74.0" text="Type" />
+            <TableColumn minWidth="7.0" prefWidth="190.0" text="Start Date/ Time " />
+            <TableColumn minWidth="3.0" prefWidth="128.0" text="End Date/ TIme" />
+            <TableColumn prefWidth="92.0" text="Customer ID" />
+            <TableColumn prefWidth="75.0" text="User ID" />
+        </columns>
+      </TableView>
+      <Label layoutX="502.0" layoutY="40.0" text="Reports">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="menuBtn" layoutX="73.0" layoutY="39.0" mnemonicParsing="false" onAction="#loadMenu" text="Main Menu" />
+      <Label layoutX="87.0" layoutY="418.0" text="Schedule:" />
+      <TableView fx:id="report1Table" layoutX="85.0" layoutY="148.0" prefHeight="200.0" prefWidth="393.0">
+         <columns>
+            <TableColumn prefWidth="84.0" text="Month" />
+            <TableColumn prefWidth="154.0" text="Type" />
+            <TableColumn prefWidth="137.0" text="Count" />
+            <TableColumn minWidth="0.0" prefWidth="133.0" text="Postal Code" />
+            <TableColumn prefWidth="101.0" text="Phone Number" />
+            <TableColumn prefWidth="129.0" text="Country" />
+            <TableColumn prefWidth="147.0" text="State/Province" />
+         </columns>
+      </TableView>
+      <Label layoutX="88.0" layoutY="109.0" text="Customers by Month and type:" />
+      <TableView fx:id="report2Table" layoutX="599.0" layoutY="148.0" prefHeight="200.0" prefWidth="384.0">
+         <columns>
+            <TableColumn prefWidth="110.0" text="Customer ID" />
+            <TableColumn prefWidth="275.0" text="Count" />
+            <TableColumn minWidth="0.0" prefWidth="0.0" />
+         </columns>
+      </TableView>
+      <Label layoutX="599.0" layoutY="109.0" text="Appointment Count by Customer:" />
+      <ComboBox fx:id="contactFilterDropdown" layoutX="177.0" layoutY="451.0" onAction="#filterByContact" prefWidth="150.0" promptText="Contact" />
+      <Label layoutX="88.0" layoutY="455.0" text="Contact" />
+   </children>
+</AnchorPane>

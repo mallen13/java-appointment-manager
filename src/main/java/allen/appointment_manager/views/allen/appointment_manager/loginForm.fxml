@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.LoginController">
+   <children>
+      <Accordion layoutX="144.0" layoutY="105.0" />
+      <Text fx:id="usernameLabel" layoutX="120.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="127.240234375" />
+      <Text fx:id="passwordLabel" layoutX="120.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="107.240234375" />
+      <Text fx:id="locationLabel" layoutX="120.0" layoutY="251.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="286.5" />
+      <Text fx:id="loginLabel" layoutX="262.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <TextField fx:id="usernameInput" layoutX="245.0" layoutY="130.0" />
+      <Button fx:id="loginBtn" layoutX="260.0" layoutY="309.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="81.0" text="Login" />
+      <PasswordField fx:id="passwordInput" layoutX="245.0" layoutY="188.0" />
+   </children>
+</AnchorPane>

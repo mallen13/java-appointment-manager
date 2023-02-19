@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="745.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.AppointmentsPageController">
+   <children>
+      <TableView fx:id="recordsTable" layoutX="44.0" layoutY="510.0" prefHeight="200.0" prefWidth="988.0">
+        <columns>
+          <TableColumn prefWidth="102.40300750732422" text="Appointment ID" />
+          <TableColumn minWidth="0.0" prefWidth="88.85171508789062" text="Title" />
+            <TableColumn prefWidth="141.65963745117188" text="Description" />
+            <TableColumn minWidth="0.0" prefWidth="79.25848388671875" text="Location" />
+            <TableColumn minWidth="0.0" prefWidth="95.060791015625" text="Contact" />
+            <TableColumn minWidth="0.0" prefWidth="63.2471923828125" text="Type" />
+            <TableColumn prefWidth="126.41064453125" text="Start Date/Time " />
+            <TableColumn prefWidth="118.9124755859375" text="End Date/Time " />
+            <TableColumn prefWidth="92.54376220703125" text="Customer ID" />
+            <TableColumn minWidth="8.08367919921875" prefWidth="77.7928466796875" text="User ID" />
+        </columns>
+      </TableView>
+      <Button fx:id="addBtn" layoutX="391.0" layoutY="428.0" mnemonicParsing="false" onAction="#addRecord" prefHeight="25.0" prefWidth="41.0" text="Add" />
+      <Button fx:id="clearBtn" layoutX="613.0" layoutY="428.0" mnemonicParsing="false" onAction="#clearRecord" text="Clear" />
+      <Button fx:id="modifyBtn" layoutX="465.0" layoutY="428.0" mnemonicParsing="false" onAction="#modifyRecord" text="Modify" />
+      <Button fx:id="deleteBtn" layoutX="539.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteRecord" text="Delete" />
+      <Label layoutX="476.0" layoutY="40.0" text="Appointments">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="menuBtn" layoutX="73.0" layoutY="38.0" mnemonicParsing="false" onAction="#loadMenu" text="Main Menu" />
+      <Label layoutX="196.0" layoutY="114.0" prefHeight="17.0" prefWidth="96.0" text="Appointment ID" />
+      <TextField fx:id="idInput" disable="true" layoutX="292.0" layoutY="110.0" />
+      <ComboBox fx:id="customerDropdown" layoutX="370.0" layoutY="470.0" onAction="#filterByCustomer" prefHeight="25.0" prefWidth="161.0" promptText="Customer" />
+      <Button fx:id="showAllBtn" layoutX="550.0" layoutY="469.0" mnemonicParsing="false" onAction="#showAll" text="All Appointments" />
+      <RadioButton fx:id="monthRadioBtn" layoutX="683.0" layoutY="474.0" mnemonicParsing="false" onAction="#filterByMonth" text="Month ">
+         <toggleGroup>
+            <ToggleGroup fx:id="tableFilter" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="weekRadioBtn" layoutX="760.0" layoutY="474.0" mnemonicParsing="false" onAction="#filterByWeek" text="Week" toggleGroup="$tableFilter" />
+      <Label layoutX="307.0" layoutY="432.0" text="Records:" />
+      <Label layoutX="307.0" layoutY="473.0" text="Filter:" />
+      <Label layoutX="196.0" layoutY="150.0" prefHeight="17.0" prefWidth="96.0" />
+      <Label layoutX="196.0" layoutY="150.0" prefHeight="17.0" prefWidth="96.0" text="Title" />
+      <TextField fx:id="titleInput" layoutX="292.0" layoutY="146.0" />
+      <Label layoutX="196.0" layoutY="190.0" prefHeight="17.0" prefWidth="96.0" text="Description" />
+      <TextArea fx:id="descriptionInput" layoutX="292.0" layoutY="181.0" prefHeight="93.0" prefWidth="161.0" wrapText="true" />
+      <Label layoutX="196.0" layoutY="288.0" prefHeight="17.0" prefWidth="96.0" text="Location" />
+      <TextField fx:id="locationInput" layoutX="292.0" layoutY="284.0" />
+      <Label layoutX="196.0" layoutY="331.0" prefHeight="17.0" prefWidth="96.0" text="Contact" />
+      <ComboBox fx:id="contactDropdown" layoutX="292.0" layoutY="327.0" prefHeight="25.0" prefWidth="161.0" promptText="Contact" />
+      <Label layoutX="548.0" layoutY="117.0" prefHeight="17.0" prefWidth="96.0" text="Type" />
+      <TextField fx:id="typeInput" layoutX="655.0" layoutY="113.0" />
+      <Label layoutX="548.0" layoutY="154.0" prefHeight="17.0" prefWidth="96.0" text="Start Date/ Time" />
+      <Label layoutX="548.0" layoutY="193.0" prefHeight="17.0" prefWidth="96.0" text="End Date/ Time" />
+      <Label layoutX="548.0" layoutY="236.0" prefHeight="17.0" prefWidth="96.0" text="Customer ID" />
+      <TextField fx:id="customerIdInput" layoutX="657.0" layoutY="232.0" />
+      <Label layoutX="548.0" layoutY="279.0" prefHeight="17.0" prefWidth="96.0" text="User ID" />
+      <TextField fx:id="userIdInput" disable="true" layoutX="653.0" layoutY="272.0" />
+      <ComboBox fx:id="startTimeDropdown" layoutX="859.0" layoutY="150.0" prefHeight="25.0" prefWidth="161.0" promptText="Start Time" />
+      <ComboBox fx:id="endTimeDropdown" layoutX="860.0" layoutY="188.0" prefHeight="25.0" prefWidth="161.0" promptText="End Time" />
+      <DatePicker fx:id="startDatePicker" layoutX="657.0" layoutY="148.0" prefHeight="26.0" prefWidth="182.0" />
+      <DatePicker fx:id="endDatePicker" layoutX="657.0" layoutY="188.0" prefHeight="26.0" prefWidth="182.0" />
+   </children>
+</AnchorPane>

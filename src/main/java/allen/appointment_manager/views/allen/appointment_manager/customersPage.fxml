@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="739.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.CustomersPageController">
+   <children>
+      <TableView fx:id="recordsTable" layoutX="88.0" layoutY="502.0" prefHeight="200.0" prefWidth="887.0">
+        <columns>
+          <TableColumn prefWidth="84.0" text="Customer ID" />
+          <TableColumn prefWidth="154.0" text="Customer Name" />
+            <TableColumn prefWidth="137.0" text="Address" />
+            <TableColumn minWidth="0.0" prefWidth="133.0" text="Postal Code" />
+            <TableColumn prefWidth="101.0" text="Phone Number" />
+            <TableColumn prefWidth="129.0" text="Country" />
+            <TableColumn prefWidth="147.0" text="State/Province" />
+        </columns>
+      </TableView>
+      <Label layoutX="214.0" layoutY="159.0" prefHeight="17.0" prefWidth="96.0" text="Customer Name" />
+      <Label layoutX="214.0" layoutY="200.0" prefHeight="17.0" prefWidth="47.0" text="Address" />
+      <Label layoutX="214.0" layoutY="238.0" prefHeight="17.0" prefWidth="69.0" text="Postal Code" />
+      <Label layoutX="212.0" layoutY="278.0" prefHeight="17.0" prefWidth="85.0" text="Phone Number" />
+      <Label layoutX="220.0" layoutY="319.0" prefHeight="17.0" prefWidth="58.0" text="Country" />
+      <TextField fx:id="nameInput" layoutX="335.0" layoutY="155.0" />
+      <TextField fx:id="addressInput" layoutX="335.0" layoutY="196.0" />
+      <TextField fx:id="postalCodeInput" layoutX="335.0" layoutY="234.0" />
+      <TextField fx:id="phoneNumberInput" layoutX="335.0" layoutY="274.0" />
+      <Label layoutX="547.0" layoutY="319.0" prefHeight="17.0" prefWidth="83.0" text="State/Province" />
+      <Button fx:id="addBtn" layoutX="383.0" layoutY="413.0" mnemonicParsing="false" onAction="#addRecord" prefHeight="25.0" prefWidth="41.0" text="Add" />
+      <Button fx:id="clearBtn" layoutX="621.0" layoutY="413.0" mnemonicParsing="false" onAction="#clearRecord" text="Clear" />
+      <Button fx:id="modifyBtn" layoutX="461.0" layoutY="413.0" mnemonicParsing="false" onAction="#modifyRecord" text="Modify" />
+      <Button fx:id="deleteBtn" layoutX="547.0" layoutY="413.0" mnemonicParsing="false" onAction="#deleteRecord" text="Delete" />
+      <Label layoutX="476.0" layoutY="40.0" text="Customers">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="countryDropdown" layoutX="335.0" layoutY="315.0" prefHeight="25.0" prefWidth="161.0" />
+      <ComboBox fx:id="stateDropdown" layoutX="643.0" layoutY="315.0" prefHeight="25.0" prefWidth="161.0" />
+      <Button fx:id="menuBtn" layoutX="73.0" layoutY="39.0" mnemonicParsing="false" onAction="#loadMenu" text="Main Menu" />
+      <Label layoutX="212.0" layoutY="122.0" prefHeight="17.0" prefWidth="96.0" text="Customer ID" />
+      <TextField fx:id="idInput" disable="true" layoutX="333.0" layoutY="118.0" />
+      <Label layoutX="283.0" layoutY="418.0" prefHeight="17.0" prefWidth="55.0" text="Records:" />
+   </children>
+</AnchorPane>
