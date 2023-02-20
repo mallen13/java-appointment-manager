@@ -4,7 +4,7 @@ package allen.appointment_manager.models;
  * creates a customer object
  */
 public class Customer {
-    private int id;
+    private int custId;
     private String name;
     private String address;
     private String postalCode;
@@ -12,12 +12,23 @@ public class Customer {
     private String stateProvince;
     private String country;
 
+    public Customer(int custId, String name, String address, String postalCode, String phoneNumber, String stateProvince, String country) {
+        this.custId = custId;
+        this.name = name;
+        this.address = address;
+        this.postalCode = postalCode;
+        this.phoneNumber = phoneNumber;
+        this.stateProvince = stateProvince;
+        this.country = country;
+    }
+
+
     /**
      * Gets the ID of the customer.
      * @return the customer's ID
      */
     public int getId() {
-        return id;
+        return custId;
     }
 
     /**
@@ -25,7 +36,7 @@ public class Customer {
      * @param id the customer's ID
      */
     public void setId(int id) {
-        this.id = id;
+        this.custId = custId;
     }
 
     /**

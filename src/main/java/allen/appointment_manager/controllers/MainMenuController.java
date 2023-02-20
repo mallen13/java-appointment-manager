@@ -1,6 +1,7 @@
 package allen.appointment_manager.controllers;
 
-import allen.appointment_manager.Helpers;
+import allen.appointment_manager.helpers.DatabaseConnector;
+import allen.appointment_manager.helpers.Helpers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -22,6 +23,7 @@ public class MainMenuController {
      * quits the app
      */
     @FXML void exitApp(ActionEvent event) {
+        DatabaseConnector.closeConnection();
         System.exit(0);
     }
 

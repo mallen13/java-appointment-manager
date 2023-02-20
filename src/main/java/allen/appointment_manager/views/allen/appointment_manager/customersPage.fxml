@@ -9,17 +9,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="739.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.CustomersPageController">
+<AnchorPane prefHeight="739.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.CustomersPageController">
    <children>
       <TableView fx:id="recordsTable" layoutX="88.0" layoutY="502.0" prefHeight="200.0" prefWidth="887.0">
         <columns>
-          <TableColumn prefWidth="84.0" text="Customer ID" />
-          <TableColumn prefWidth="154.0" text="Customer Name" />
-            <TableColumn prefWidth="137.0" text="Address" />
-            <TableColumn minWidth="0.0" prefWidth="133.0" text="Postal Code" />
-            <TableColumn prefWidth="101.0" text="Phone Number" />
-            <TableColumn prefWidth="129.0" text="Country" />
-            <TableColumn prefWidth="147.0" text="State/Province" />
+          <TableColumn fx:id="custID" prefWidth="84.0" text="Customer ID" />
+          <TableColumn fx:id="custName" prefWidth="154.0" text="Customer Name" />
+            <TableColumn fx:id="address" prefWidth="137.0" text="Address" />
+            <TableColumn fx:id="postalCode" minWidth="0.0" prefWidth="133.0" text="Postal Code" />
+            <TableColumn fx:id="phoneNum" prefWidth="101.0" text="Phone Number" />
+            <TableColumn fx:id="country" prefWidth="129.0" text="Country" />
+            <TableColumn fx:id="state" prefWidth="147.0" text="State Province" />
         </columns>
       </TableView>
       <Label layoutX="214.0" layoutY="159.0" prefHeight="17.0" prefWidth="96.0" text="Customer Name" />

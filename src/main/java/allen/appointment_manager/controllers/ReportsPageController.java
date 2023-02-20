@@ -1,6 +1,6 @@
 package allen.appointment_manager.controllers;
 
-import allen.appointment_manager.Helpers;
+import allen.appointment_manager.helpers.Helpers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

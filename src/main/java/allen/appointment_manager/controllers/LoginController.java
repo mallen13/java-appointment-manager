@@ -1,13 +1,18 @@
 package allen.appointment_manager.controllers;
 
+import allen.appointment_manager.Main;
 import allen.appointment_manager.models.DataAccessObject;
 import allen.appointment_manager.models.User;
-import allen.appointment_manager.Helpers;
+import allen.appointment_manager.helpers.Helpers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -38,7 +43,6 @@ public class LoginController {
         String message = "userId: " + user.getUserId() + ", " +
                 (success ? "status: succeeded," : "status: failed") + " dateTime: " +
                 LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-
         try {
             FileWriter fileWriter = new FileWriter(fileName, true);
             fileWriter.write(message + System.lineSeparator());
@@ -84,6 +88,7 @@ public class LoginController {
         } else {
             user.setUserId(userId);
             logLoginAttempt(user,true);
+
             myHelpers.changeScene(
                     "mainMenu.fxml",
                     600, 400,

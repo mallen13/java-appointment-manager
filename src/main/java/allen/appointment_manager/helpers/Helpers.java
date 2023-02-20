@@ -1,5 +1,6 @@
-package allen.appointment_manager;
+package allen.appointment_manager.helpers;
 
+import allen.appointment_manager.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,8 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.function.Function;
 
 /**
  * Class of various helper functions
@@ -20,8 +19,9 @@ public class Helpers {
      * @params file, width, height, title,event
      */
     public void changeScene(String file,int width, int height,String title, ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource(file));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(file));
+        //FXMLLoader fxmlLoader = new FXMLLoader();
+        //fxmlLoader.setLocation(getClass().getResource(file));
         Scene scene = new Scene(fxmlLoader.load(),width,height);
 
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
