@@ -64,10 +64,10 @@ public class LoginController {
         String username = usernameInput.getText();
         String password = passwordInput.getText();
 
-        String alertTitle = locale.equals("fr_FA") ? "erreur d'entrée" : "Input Error";
-        String alertMessage = locale.equals("fr_FA") ? "pas d'entrée vide" : "Inputs cannot be empty.";
-        String invalidTitle = locale.equals("fr_FA") ? "Invalide" : "Invalid";
-        String invalidCredentials = locale.equals("fr_FA") ? "Nom d'utilisateur ou mot de passe incorrect" : "Invalid Username or Password";
+        String alertTitle = locale.equals("fr_FR") ? "erreur d'entrée" : "Input Error";
+        String alertMessage = locale.equals("fr_FR") ? "pas d'entrée vide" : "Inputs cannot be empty.";
+        String invalidTitle = locale.equals("fr_FR") ? "Invalide" : "Invalid";
+        String invalidCredentials = locale.equals("fr_FR") ? "Nom d'utilisateur ou mot de passe incorrect" : "Invalid Username or Password";
 
         //validate inputs
         boolean emptyInputs = myHelpers.isAnyEmpty(username,password);
@@ -108,7 +108,7 @@ public class LoginController {
         user.setTimeZone(zoneId.toString());
 
         //change to french if needed
-        if (locale.equals("fr_FA")) {
+        if (locale.equals("fr_FR")) {
             loginLabel.setText("Connexion");
             usernameLabel.setText("nom d'utilisateur");
             passwordLabel.setText("mot de passe");

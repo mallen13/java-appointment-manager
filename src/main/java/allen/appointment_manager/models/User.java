@@ -4,8 +4,8 @@ package allen.appointment_manager.models;
  * Establish a user_id class
  */
 public class User {
-    private int user_id;
-    private String timeZone;
+    private static int user_id;
+    private static String timeZone;
 
     /**
      * Set user id
@@ -19,8 +19,8 @@ public class User {
      * get user's id
      * @return user's id
      */
-    public int getUserId() {
-        return this.user_id;
+    public static int getUserId() {
+        return user_id;
     }
 
     /**

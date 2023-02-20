@@ -5,6 +5,7 @@ import allen.appointment_manager.models.Customer;
 
 
 import allen.appointment_manager.models.DataAccessObject;
+import allen.appointment_manager.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,7 +28,6 @@ public class CustomersPageController {
     @FXML private Button addBtn;
     @FXML private TextField addressInput;
     @FXML private Button clearBtn;
-   // @FXML private ComboBox<?> countryDropdown;
     @FXML private Button deleteBtn;
     @FXML private TextField idInput;
     @FXML private Button menuBtn;
@@ -35,8 +35,9 @@ public class CustomersPageController {
     @FXML private TextField nameInput;
     @FXML private TextField phoneNumberInput;
     @FXML private TextField postalCodeInput;
+    @FXML private TextField countryInput;
     @FXML private TableView<Customer> recordsTable;
-   // @FXML private ComboBox<?> stateDropdown;
+    @FXML private ComboBox<String> stateDropdown;
 
     @FXML private TableColumn<Customer, String> address;
     @FXML private TableColumn<Customer, String> country;
@@ -47,11 +48,14 @@ public class CustomersPageController {
     @FXML private TableColumn<Customer, String> state;
 
     /**
-     *get location and set language
+     *setup class and listeners, fill table
      */
     @FXML public void initialize() throws SQLException {
         //get customers
         customerList = DataAccessObject.getCustomers();
+
+        //set default customer id
+        idInput.setText("Auto-Generated");
 
         //fill parts table on initialize
         recordsTable.setItems(customerList);
@@ -63,55 +67,131 @@ public class CustomersPageController {
         country.setCellValueFactory(new PropertyValueFactory<>("country"));
         state.setCellValueFactory(new PropertyValueFactory<>("stateProvince"));
 
+        //listen for table row select
+        recordsTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, selectedCustomer) -> {
+            if (selectedCustomer != null) {
+                customer = selectedCustomer;
+                // This code will execute when a row is selected
+                String customerId = String.valueOf(selectedCustomer.getId());
+                idInput.setText(customerId);
+                nameInput.setText(selectedCustomer.getName());
+                addressInput.setText(selectedCustomer.getAddress());
+                postalCodeInput.setText(selectedCustomer.getPostalCode());
+                phoneNumberInput.setText(selectedCustomer.getPhoneNumber());
+                stateDropdown.setValue(selectedCustomer.getStateProvince());
+                countryInput.setText(selectedCustomer.getCountry());
 
-        //set next available id
+                //disable buttons
+                addBtn.setDisable(true);
+                modifyBtn.setDisable(false);
+                deleteBtn.setDisable(false);
+            }
+        });
+
+        //fill dropdown menus
+        try {
+            ObservableList<String> divisionList = DataAccessObject.getDivisions();
+            stateDropdown.setItems(divisionList);
+        //if error
+        } catch (SQLException e) {
+            System.out.println("Error getting countries and states");
+        }
+
+        //listen for dropdown select
+        stateDropdown.setOnAction(event -> {
+            String selectedValue = stateDropdown.getValue();
+            // perform some action based on the selected value
+            String country = DataAccessObject.getCountryByDivision(selectedValue);
+            countryInput.setText(country);
+        });
+    }
+
+    /**
+     * Clear current record
+     */
+    @FXML void clearRecord() {
+        //reset customer attribute
+        //clears inputs
+        nameInput.clear();
+        addressInput.clear();
+        postalCodeInput.clear();
+        phoneNumberInput.clear();
+        countryInput.clear();
+        idInput.setText("Auto-Generated");
+        stateDropdown.setValue(null);
+
+        //disable buttons
+        addBtn.setDisable(false);
+        modifyBtn.setDisable(true);
+        deleteBtn.setDisable(true);
     }
 
     /**
      *adds a record
      * @param event
      */
-    @FXML void addRecord(ActionEvent event) {
+    @FXML void addRecord(ActionEvent event) throws SQLException {
         //get inputs helper
         String customerName = nameInput.getText();
         String address = addressInput.getText();
         String postalCode = postalCodeInput.getText();
         String phoneNum = phoneNumberInput.getText();
-       // String country = ???;
+        String country = countryInput.getText();
+        String state = stateDropdown.getSelectionModel().getSelectedItem();
 
         //validate inputs
-        if (myHelpers.isAnyEmpty(customerName,address,postalCode,phoneNum)) {
+        if (myHelpers.isAnyEmpty(customerName,address,postalCode,phoneNum,country,state)) {
             myHelpers.showAlert("Invalid Inputs", "Inputs cannot be empty");
+            //validate state selected
         } else {
             //set customer attributes
-            //send customer to DB
-                //reset form or alert an error
+            int divisionId = DataAccessObject.getDivisionId(state);
+            int userId = User.getUserId();
+            Customer customer = new Customer(
+                    -1,
+                    customerName,
+                    address,
+                    postalCode,
+                    phoneNum,
+                    state,
+                    country,
+                    divisionId
+                    );
 
-            //reset form helpers
-            nameInput.clear();
-            addressInput.clear();
-            postalCodeInput.clear();
-            phoneNumberInput.clear();
-            //countryDropdown
-            //state dropdown
-            idInput.setText(Integer.toString(nextId));
+            //send data to DB
+            int newCustomerId = DataAccessObject.addCustomer(customer,userId);
+
+            //handle query response
+            if (newCustomerId == -1) {
+                myHelpers.showAlert("DB Error", "Unable to Complete DB Transaction.");
+            } else {
+                customer.setId(newCustomerId);
+                System.out.println(customer.getId());
+                customerList.add(customer);
+                clearRecord();
+            }
+
         }
     }
 
     /**
-     * Clear current record
-     */
-    @FXML void clearRecord(ActionEvent event) {
-        //reset customer attribute
-        //clears inputs
-    }
-
-    /**
-     * delete selected customer record
+     * delete selected record
      */
     @FXML void deleteRecord(ActionEvent event) {
-        //post to DB
-            //clear data or alert an error
+        //attempt remove
+        if (!myHelpers.showConfirm("Delete Record", "Are you sure you want to delete this record?") ) {
+            return;
+        }
+        int delId = customer.getId();
+        boolean noErrs = DataAccessObject.deleteFromCustomers(delId);
+
+        //handle response
+        if (noErrs) {
+            clearRecord();
+            customerList.remove(customer);
+        } else {
+            myHelpers.showAlert("DB Error", "Unable to Delete Record");
+        }
     }
 
     /**
@@ -127,14 +207,50 @@ public class CustomersPageController {
     }
 
     /**
-     * delete selected customer record
+     * modify selected customer record
      */
-    @FXML void modifyRecord(ActionEvent event) {
-        //validate inputs
-        //set customer attributes
+    @FXML void modifyRecord(ActionEvent event) throws SQLException {
+        //get inputs helper
+        String customerName = nameInput.getText();
+        String address = addressInput.getText();
+        String postalCode = postalCodeInput.getText();
+        String phoneNum = phoneNumberInput.getText();
+        String country = countryInput.getText();
+        String state = stateDropdown.getSelectionModel().getSelectedItem();
 
-        //send customer to DB
-        //clear data or alert an error
+        //validate inputs
+        if (myHelpers.isAnyEmpty(customerName,address,postalCode,phoneNum,country,state)) {
+            myHelpers.showAlert("Invalid Inputs", "Inputs cannot be empty");
+            //validate state selected
+        } else {
+            //set customer attributes
+            int divisionId = DataAccessObject.getDivisionId(state);
+            Customer customer = new Customer(
+                    this.customer.getId(),
+                    customerName,
+                    address,
+                    postalCode,
+                    phoneNum,
+                    state,
+                    country,
+                    divisionId
+            );
+
+            //send data to DB
+            boolean modifiedCustomer = DataAccessObject.modifyCustomer(customer);
+
+            //handle query response
+            if (!modifiedCustomer) {
+                myHelpers.showAlert("DB Error", "Unable to Complete DB Transaction.");
+            } else {
+                int idx = customerList.indexOf(this.customer);
+                customerList.set(idx,customer);
+               // customer.setId(modifiedCustomers);
+               // customerList.add(customer);
+                clearRecord();
+            }
+
+        }
     }
 
     /**
