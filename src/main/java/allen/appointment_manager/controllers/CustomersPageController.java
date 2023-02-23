@@ -2,8 +2,6 @@ package allen.appointment_manager.controllers;
 
 import allen.appointment_manager.helpers.Helpers;
 import allen.appointment_manager.models.Customer;
-
-
 import allen.appointment_manager.models.DataAccessObject;
 import allen.appointment_manager.models.User;
 import javafx.collections.FXCollections;
@@ -12,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -23,14 +20,11 @@ public class CustomersPageController {
     Customer customer = null;
     Helpers myHelpers = new Helpers();
     ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    int nextId;
 
     @FXML private Button addBtn;
     @FXML private TextField addressInput;
-    @FXML private Button clearBtn;
     @FXML private Button deleteBtn;
     @FXML private TextField idInput;
-    @FXML private Button menuBtn;
     @FXML private Button modifyBtn;
     @FXML private TextField nameInput;
     @FXML private TextField phoneNumberInput;
@@ -245,20 +239,10 @@ public class CustomersPageController {
             } else {
                 int idx = customerList.indexOf(this.customer);
                 customerList.set(idx,customer);
-               // customer.setId(modifiedCustomers);
-               // customerList.add(customer);
                 clearRecord();
             }
 
         }
-    }
-
-    /**
-     * populates the form with the selected customer
-     */
-    @FXML void onSelectCustomer() {
-        //get selected customer
-        //populate data with selected info
     }
 
 }

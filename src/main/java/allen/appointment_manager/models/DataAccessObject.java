@@ -6,7 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * model that contains method for working with the back end database
@@ -134,6 +136,27 @@ public class DataAccessObject {
         return id;
     }
 
+
+    /**
+     * returns all customer ID's
+     */
+    public static ObservableList<Integer> getCustomerIDs() throws SQLException {
+        ObservableList<Integer> idList = FXCollections.observableArrayList();
+
+        String query = "SELECT DISTINCT Customer_ID FROM customers";
+
+        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int id = rs.getInt("Customer_ID");
+            idList.add(id);
+        }
+
+        return idList;
+    }
+
+
     /**
      * returns a list of customers
      * @return customers obersvable list
@@ -180,21 +203,16 @@ public class DataAccessObject {
                     "(Customer_Name,Address,Postal_Code,Phone,Division_ID,Create_Date,Created_By) " +
                     "VALUES (?,?,?,?,?,?,?)";
 
-            //Helpers myHelpers = new Helpers();
-            //myHelpers.convertToUTC(new Timestamp(System.currentTimeMillis()));
-
             PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, customer.getName());
             ps.setString(2, customer.getAddress());
             ps.setString(3, customer.getPostalCode());
             ps.setString(4, customer.getPhoneNumber());
             ps.setInt(5, customer.getDivisionId());
-            ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+            ps.setTimestamp(6, Timestamp.from(Instant.now()));
             ps.setInt(7, userId);
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
-
-            System.out.println(rs);
 
             if (rs.next()) {
                 returnId = rs.getInt(1);
@@ -238,7 +256,7 @@ public class DataAccessObject {
             ps.setString(3, customer.getPostalCode()); //postal code
             ps.setString(4, customer.getPhoneNumber()); //phone number
             ps.setInt(5, customer.getDivisionId()); //division id
-            ps.setTimestamp(6, new Timestamp(System.currentTimeMillis())); //timestamp
+            ps.setTimestamp(6, Timestamp.from(Instant.now())); //timestamp
             ps.setString(7, "script"); //updated by
             ps.setInt(8, customer.getId()); //customer id
 
@@ -268,4 +286,79 @@ public class DataAccessObject {
             return false;
         }
     }
+
+    /**
+     * gets a list of appointments
+     * @return
+     * @throws SQLException
+     */
+    public static ObservableList<Appointment> getAppointments() throws SQLException {
+
+        Helpers myHelpers = new Helpers();
+        ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
+
+        String query =
+                "SELECT a.*,c.Contact_Name FROM appointments a " +
+                "JOIN contacts c ON a.Contact_ID = c.Contact_ID";
+
+        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            int id = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            String contact = rs.getString("Contact_Name");
+            LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();  //convert
+            LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();  //convert
+            String type = rs.getString("Type");
+            int customerId = rs.getInt("Customer_ID");
+            int userId = rs.getInt("User_ID");
+
+            Appointment appointment = new Appointment(id,title,description,location,contact,type,startDateTime,endDateTime,customerId,userId);
+            appointmentsList.add(appointment);
+        }
+
+        return appointmentsList;
+    }
+
+    /**
+     * gets a list of contacts
+     * @return
+     * @throws SQLException
+     */
+    public static ObservableList<String> getContacts() throws SQLException {
+        ObservableList<String> contactList = FXCollections.observableArrayList();
+
+        String query = "SELECT DISTINCT Contact_Name FROM contacts";
+
+        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            String contactName = rs.getString("Contact_Name");
+            contactList.add(contactName);
+        }
+
+        return contactList;
+    }
+
+    /**
+     * delete
+     */
+    public static boolean deleteFromAppointments(int id) {
+        try {
+            String query = "DELETE FROM appointments WHERE appointment_id = ?";
+            PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+            ps.setString(1, String.valueOf(id));
+            int rs = ps.executeUpdate();
+            if (rs == 1) { return true; }
+            else {return false;}
+        } catch (Exception e) {
+            System.out.println("Err deleting: " + e);
+            return false;
+        }
+    }
+
 }

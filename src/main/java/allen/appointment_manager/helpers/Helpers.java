@@ -9,7 +9,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Class of various helper functions
@@ -78,15 +84,20 @@ public class Helpers {
     }
 
     /**
-     * Convert to UTC
+     * convert provided date/time to UTC
      */
-    public Date convertToUTC(Date dateTime) {
-        System.out.println(dateTime);
+    public static LocalDateTime convertToUTC(LocalDateTime localDateTime) {
+        // Set the timezone of the input date to the local timezone
+        ZoneId localZone = ZoneId.systemDefault();
 
-        return dateTime;
+        // Get the offset from UTC for the local timezone at the given date and time
+        ZoneOffset localOffset = localZone.getRules().getOffset(localDateTime);
+
+        // Adjust the input date and time to the equivalent UTC date and time
+        LocalDateTime utcDateTime = localDateTime.atOffset(localOffset)
+                .withOffsetSameInstant(ZoneOffset.UTC)
+                .toLocalDateTime();
+        return utcDateTime;
     }
 
-    /**
-     * Convert from UTC
-     */
 }

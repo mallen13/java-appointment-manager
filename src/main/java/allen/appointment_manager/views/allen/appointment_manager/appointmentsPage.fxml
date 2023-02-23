@@ -20,7 +20,7 @@
           <TableColumn fx:id="appointmentID" prefWidth="102.40300750732422" text="Appointment ID" />
           <TableColumn fx:id="title" minWidth="0.0" prefWidth="88.85171508789062" text="Title" />
             <TableColumn fx:id="description" prefWidth="141.65963745117188" text="Description" />
-            <TableColumn fx:id="location" minWidth="0.0" prefWidth="79.25848388671875" text="Location" />
+            <TableColumn fx:id="locationColumn" minWidth="0.0" prefWidth="79.25848388671875" text="Location" />
             <TableColumn fx:id="contact" minWidth="0.0" prefWidth="95.060791015625" text="Contact" />
             <TableColumn fx:id="type" minWidth="0.0" prefWidth="63.2471923828125" text="Type" />
             <TableColumn fx:id="start" prefWidth="126.41064453125" text="Start Date/Time " />
@@ -41,7 +41,7 @@
       <Button fx:id="menuBtn" layoutX="73.0" layoutY="38.0" mnemonicParsing="false" onAction="#loadMenu" text="Main Menu" />
       <Label layoutX="196.0" layoutY="114.0" prefHeight="17.0" prefWidth="96.0" text="Appointment ID" />
       <TextField fx:id="idInput" disable="true" layoutX="292.0" layoutY="110.0" />
-      <ComboBox fx:id="customerDropdown" layoutX="370.0" layoutY="470.0" onAction="#filterByCustomer" prefHeight="25.0" prefWidth="161.0" promptText="Customer" />
+      <ComboBox fx:id="customerDropdown" layoutX="370.0" layoutY="470.0" onAction="#filterByCustomer" prefHeight="25.0" prefWidth="161.0" promptText="Customer ID" />
       <Button fx:id="showAllBtn" layoutX="550.0" layoutY="469.0" mnemonicParsing="false" onAction="#showAll" text="All Appointments" />
       <RadioButton fx:id="monthRadioBtn" layoutX="683.0" layoutY="474.0" mnemonicParsing="false" onAction="#filterByMonth" text="Month ">
          <toggleGroup>
