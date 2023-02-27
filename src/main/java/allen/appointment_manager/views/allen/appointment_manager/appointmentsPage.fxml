@@ -41,7 +41,7 @@
       <Button fx:id="menuBtn" layoutX="73.0" layoutY="38.0" mnemonicParsing="false" onAction="#loadMenu" text="Main Menu" />
       <Label layoutX="196.0" layoutY="114.0" prefHeight="17.0" prefWidth="96.0" text="Appointment ID" />
       <TextField fx:id="idInput" disable="true" layoutX="292.0" layoutY="110.0" />
-      <ComboBox fx:id="customerDropdown" layoutX="370.0" layoutY="470.0" onAction="#filterByCustomer" prefHeight="25.0" prefWidth="161.0" promptText="Customer ID" />
+      <ComboBox fx:id="customerDropdown" layoutX="391.0" layoutY="469.0" onAction="#filterByCustomer" prefHeight="25.0" prefWidth="132.0" promptText="Customer ID" />
       <Button fx:id="showAllBtn" layoutX="550.0" layoutY="469.0" mnemonicParsing="false" onAction="#showAll" text="All Appointments" />
       <RadioButton fx:id="monthRadioBtn" layoutX="683.0" layoutY="474.0" mnemonicParsing="false" onAction="#filterByMonth" text="Month ">
          <toggleGroup>
@@ -61,16 +61,17 @@
       <Label layoutX="196.0" layoutY="331.0" prefHeight="17.0" prefWidth="96.0" text="Contact" />
       <ComboBox fx:id="contactDropdown" layoutX="292.0" layoutY="327.0" prefHeight="25.0" prefWidth="161.0" promptText="Select An Option" />
       <Label layoutX="548.0" layoutY="117.0" prefHeight="17.0" prefWidth="96.0" text="Type" />
-      <TextField fx:id="typeInput" layoutX="655.0" layoutY="113.0" />
+      <TextField fx:id="typeInput" layoutX="655.0" layoutY="113.0" prefHeight="25.0" prefWidth="182.0" />
       <Label layoutX="548.0" layoutY="154.0" prefHeight="17.0" prefWidth="96.0" text="Start Date" />
       <Label layoutX="548.0" layoutY="193.0" prefHeight="17.0" prefWidth="96.0" text="End Date" />
-      <Label layoutX="548.0" layoutY="236.0" prefHeight="17.0" prefWidth="96.0" text="Customer ID" />
-      <TextField fx:id="customerIdInput" layoutX="657.0" layoutY="232.0" />
-      <Label layoutX="548.0" layoutY="279.0" prefHeight="17.0" prefWidth="96.0" text="User ID" />
-      <TextField fx:id="userIdInput" disable="true" layoutX="653.0" layoutY="272.0" />
-      <ComboBox fx:id="startTimeDropdown" layoutX="859.0" layoutY="150.0" prefHeight="25.0" prefWidth="161.0" promptText="Start Time" />
-      <ComboBox fx:id="endTimeDropdown" layoutX="860.0" layoutY="188.0" prefHeight="25.0" prefWidth="161.0" promptText="End Time" />
+      <Label layoutX="556.0" layoutY="268.0" prefHeight="17.0" prefWidth="96.0" text="User ID" />
+      <TextField fx:id="userIdInput" disable="true" layoutX="650.0" layoutY="264.0" prefHeight="25.0" prefWidth="191.0" />
+      <Label layoutX="556.0" layoutY="311.0" prefHeight="17.0" prefWidth="96.0" text="Customer ID" />
+      <ComboBox fx:id="startTimeDropdown" layoutX="859.0" layoutY="150.0" prefHeight="25.0" prefWidth="161.0" promptText="Start Time " />
+      <ComboBox fx:id="endTimeDropdown" layoutX="860.0" layoutY="188.0" prefHeight="25.0" prefWidth="161.0" promptText="End Time " />
       <DatePicker fx:id="startDatePicker" layoutX="657.0" layoutY="148.0" prefHeight="26.0" prefWidth="182.0" />
       <DatePicker fx:id="endDatePicker" layoutX="657.0" layoutY="188.0" prefHeight="26.0" prefWidth="182.0" />
+      <Label layoutX="650.0" layoutY="228.0" text="Note: Time Displayed in Users zone, based on EST availability (8-10)" />
+      <ComboBox fx:id="customerDropdown2" layoutX="652.0" layoutY="307.0" prefHeight="25.0" prefWidth="182.0" promptText="Customer ID" />
    </children>
 </AnchorPane>

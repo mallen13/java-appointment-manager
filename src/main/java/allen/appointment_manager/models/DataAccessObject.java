@@ -6,9 +6,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * model that contains method for working with the back end database
@@ -261,9 +261,6 @@ public class DataAccessObject {
             ps.setInt(8, customer.getId()); //customer id
 
             ps.executeUpdate();
-            rs = ps.getResultSet();
-            System.out.println(rs);
-
             return true;
         } catch(Exception e) {
             System.out.println("db error: " + e);
@@ -294,12 +291,10 @@ public class DataAccessObject {
      */
     public static ObservableList<Appointment> getAppointments() throws SQLException {
 
-        Helpers myHelpers = new Helpers();
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
 
         String query =
-                "SELECT a.*,c.Contact_Name FROM appointments a " +
-                "JOIN contacts c ON a.Contact_ID = c.Contact_ID";
+                "SELECT * FROM appointments ";
 
         PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
@@ -309,7 +304,7 @@ public class DataAccessObject {
             String title = rs.getString("Title");
             String description = rs.getString("Description");
             String location = rs.getString("Location");
-            String contact = rs.getString("Contact_Name");
+            int contact = Integer.valueOf(rs.getString("Contact_ID"));
             LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();  //convert
             LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();  //convert
             String type = rs.getString("Type");
@@ -328,17 +323,17 @@ public class DataAccessObject {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<String> getContacts() throws SQLException {
-        ObservableList<String> contactList = FXCollections.observableArrayList();
+    public static ObservableList<Integer> getContacts() throws SQLException {
+        ObservableList<Integer> contactList = FXCollections.observableArrayList();
 
-        String query = "SELECT DISTINCT Contact_Name FROM contacts";
+        String query = "SELECT DISTINCT Contact_ID FROM contacts";
 
         PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            String contactName = rs.getString("Contact_Name");
-            contactList.add(contactName);
+            int contact = rs.getInt("Contact_ID");
+            contactList.add(contact);
         }
 
         return contactList;
@@ -361,4 +356,92 @@ public class DataAccessObject {
         }
     }
 
+    /**
+     * adds a new appointment
+     */
+    public static int addAppointment(Appointment appointment) throws SQLException {
+        ResultSet rs = null;
+        int returnId = -1;
+
+        try {
+            String query =
+                    "INSERT INTO appointments" +
+                            "(Title,Description,Location,Type,Start,End,Create_Date,Created_By,Customer_ID,User_ID,Contact_ID) " +
+                            "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+
+            PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, appointment.getTitle());
+            ps.setString(2, appointment.getDescription());
+            ps.setString(3, appointment.getLocation());
+            ps.setString(4, appointment.getType());
+            ps.setTimestamp(5, Timestamp.valueOf(appointment.getStartDateTime()));
+            ps.setTimestamp(6, Timestamp.valueOf(appointment.getEndDateTime()));
+            ps.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(8, appointment.getUserId());
+            ps.setInt(9, appointment.getCustomerId());
+            ps.setInt(10, appointment.getUserId());
+            ps.setInt(11, appointment.getContact());
+            ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+
+            if (rs.next()) {
+                returnId = rs.getInt(1);
+            }
+        } catch(Exception e) {
+            System.out.print("db error: " + e);
+        }  finally
+        {
+            if (rs != null) {
+                rs.close();
+            }
+
+        }
+        return returnId;
+    }
+
+    /**
+     * modifies an appointment
+     */
+    public static boolean modifyAppointment(Appointment appointment) throws SQLException {
+        ResultSet rs = null;
+
+        try {
+            //Title,Description,Location,Type,Start,End,Create_Date,Created_By,Customer_ID,User_ID,Contact_ID)
+            String query =
+                    "UPDATE appointments SET " +
+                    "title = ?, description = ?, location = ?," +
+                    "type = ? , start = ?, end = ?, create_date = ?, " +
+                    "created_by = ?, customer_id = ?, user_id = ?, " +
+                    "contact_id = ?, last_update = ?, last_updated_by = ? " +
+                    "WHERE appointment_id = ?";
+
+            PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+            ps.setString(1, appointment.getTitle());
+            ps.setString(2, appointment.getDescription());
+            ps.setString(3, appointment.getLocation());
+            ps.setString(4, appointment.getType());
+            ps.setTimestamp(5, Timestamp.valueOf(appointment.getStartDateTime()));
+            ps.setTimestamp(6, Timestamp.valueOf(appointment.getEndDateTime()));
+            ps.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(8, appointment.getUserId());
+            ps.setInt(9, appointment.getCustomerId());
+            ps.setInt(10, appointment.getUserId());
+            ps.setInt(11, appointment.getContact());
+            ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(13, appointment.getUserId());
+            ps.setInt(14, appointment.getAppointmentId());
+            ps.executeUpdate();
+
+        } catch(Exception e) {
+            System.out.print("db error: " + e);
+            return false;
+        }  finally
+        {
+            if (rs != null) {
+                rs.close();
+            }
+
+        }
+        return true;
+    }
 }

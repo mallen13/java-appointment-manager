@@ -1,6 +1,10 @@
 package allen.appointment_manager.helpers;
 
 import allen.appointment_manager.Main;
+import allen.appointment_manager.models.Appointment;
+import allen.appointment_manager.models.DataAccessObject;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,13 +13,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.TimeZone;
+import java.sql.SQLException;
+import java.time.*;
+import java.util.List;
 
 /**
  * Class of various helper functions
@@ -40,7 +40,7 @@ public class Helpers {
 
     public boolean isAnyEmpty(String...inputs) {
         for (String input : inputs) {
-            if (input.isEmpty()) {
+            if (input.isEmpty() || input == null) {
                 return true;
             }
         }
@@ -84,20 +84,82 @@ public class Helpers {
     }
 
     /**
-     * convert provided date/time to UTC
+     * get a list of times from 8-10 EST
+     * @return
      */
-    public static LocalDateTime convertToUTC(LocalDateTime localDateTime) {
-        // Set the timezone of the input date to the local timezone
-        ZoneId localZone = ZoneId.systemDefault();
+    public static ObservableList<LocalTime> getTimes() {
+        ObservableList<LocalTime> times = FXCollections.observableArrayList();
+        ZoneId userTimeZone = ZoneId.systemDefault();
 
-        // Get the offset from UTC for the local timezone at the given date and time
-        ZoneOffset localOffset = localZone.getRules().getOffset(localDateTime);
+        int hour = 6; //to allow for before 8am for testing
+        int minute = 00;
 
-        // Adjust the input date and time to the equivalent UTC date and time
-        LocalDateTime utcDateTime = localDateTime.atOffset(localOffset)
-                .withOffsetSameInstant(ZoneOffset.UTC)
-                .toLocalDateTime();
-        return utcDateTime;
+        for (int i = 0; i < 72; i++) {
+
+            ZonedDateTime estTime = ZonedDateTime.of(LocalDate.now(), LocalTime.of(hour, minute), ZoneId.of("America/New_York"));
+            ZonedDateTime userTime = estTime.withZoneSameInstant(userTimeZone);
+            times.add(userTime.toLocalTime());
+            minute += 15;
+            if (minute > 45) {
+                minute = 00;
+                hour++;
+            }
+        }
+        return times;
     }
+
+    /**
+     * checks if start and end time between 8a and 10p EST
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    public static boolean isValidAppointment(LocalTime startTime, LocalTime endTime) {
+        ZoneId userTimeZone = ZoneId.systemDefault();
+        ZoneId estTimeZone = ZoneId.of("America/New_York");
+
+        // Convert start time to EST
+        ZonedDateTime estStartDateTime = LocalDateTime.of(LocalDate.now(userTimeZone), startTime).atZone(userTimeZone).withZoneSameInstant(estTimeZone);
+
+        // Convert end time to EST
+        ZonedDateTime estEndDateTime = LocalDateTime.of(LocalDate.now(userTimeZone), endTime).atZone(userTimeZone).withZoneSameInstant(estTimeZone);
+
+        // Check if converted start time is after 7:59 EST and converted end time is before 10:01 PM
+        LocalTime estStartTime = estStartDateTime.toLocalTime();
+        LocalTime estEndTime = estEndDateTime.toLocalTime();
+
+        return estStartTime.isAfter(LocalTime.of(7, 59)) && estEndTime.isBefore(LocalTime.of(23, 01));
+    }
+
+    /**
+     * checks for any appointment overlap with others from DB
+     * @param startDateTime
+     * @param endDateTime
+     * @return
+     * @throws SQLException
+     */
+    public boolean doesAppointmentOverlap(LocalDateTime startDateTime, LocalDateTime endDateTime) throws SQLException {
+        // Convert start time
+        ZoneId userTimeZone = ZoneId.systemDefault();
+        ZoneOffset utcOffset = ZoneOffset.UTC;
+        ZonedDateTime utcStartDateTime = startDateTime.atZone(userTimeZone).withZoneSameInstant(utcOffset);
+        ZonedDateTime utcEndDateTime = endDateTime.atZone(userTimeZone).withZoneSameInstant(utcOffset);
+
+        // Get all appointments from DB
+        List<Appointment> appointments = DataAccessObject.getAppointments();
+
+        // Check if overlap
+        for (Appointment appointment : appointments) {
+            ZonedDateTime existingStartDateTime = appointment.getStartDateTime().atZone(ZoneId.systemDefault()).withZoneSameInstant(utcOffset);
+            ZonedDateTime existingEndDateTime = appointment.getEndDateTime().atZone(ZoneId.systemDefault()).withZoneSameInstant(utcOffset);
+
+            if (utcStartDateTime.isBefore(existingEndDateTime) && existingStartDateTime.isBefore(utcEndDateTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }

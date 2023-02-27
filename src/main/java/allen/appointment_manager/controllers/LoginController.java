@@ -83,19 +83,24 @@ public class LoginController {
         if (userId == -1) {
             myHelpers.showAlert(invalidTitle,invalidCredentials);
             logLoginAttempt(user,false);
+            return;
 
         //if login success
-        } else {
-            user.setUserId(userId);
-            logLoginAttempt(user,true);
-
-            myHelpers.changeScene(
-                    "mainMenu.fxml",
-                    600, 400,
-                    "Appointment Management App",
-                    event
-            );
         }
+
+        //set user
+        user.setUserId(userId);
+
+        //log to documents
+        logLoginAttempt(user,true);
+
+        myHelpers.changeScene(
+                "mainMenu.fxml",
+                600, 400,
+                "Appointment Management App",
+                event
+        );
+
     }
 
     /**

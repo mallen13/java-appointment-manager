@@ -3,6 +3,7 @@ package allen.appointment_manager.controllers;
 import allen.appointment_manager.helpers.Helpers;
 import allen.appointment_manager.models.Appointment;
 import allen.appointment_manager.models.DataAccessObject;
+import allen.appointment_manager.models.User;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -20,9 +21,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
+import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 
 /**
@@ -34,22 +33,23 @@ public class AppointmentsPageController {
     /**
      * Filtered Part List
      */
-    private FilteredList<Appointment> appointmentsList = new FilteredList<>(DataAccessObject.getAppointments(), p -> true);
+    ObservableList<Appointment> appointmentObservableList = DataAccessObject.getAppointments();
+    private FilteredList<Appointment> appointmentsList = new FilteredList<>(appointmentObservableList, p -> true);
 
     @FXML private Button addBtn;
     @FXML private TableColumn<?, ?> appointmentID;
     @FXML private Button clearBtn;
     @FXML private TableColumn<?, ?> contact;
-    @FXML private ComboBox<String> contactDropdown;
+    @FXML private ComboBox<Integer> contactDropdown;
     @FXML private ComboBox<Integer> customerDropdown;
+    @FXML private ComboBox<Integer> customerDropdown2;
     @FXML private TableColumn<?, ?> customerID;
-    @FXML private TextField customerIdInput;
     @FXML private Button deleteBtn;
     @FXML private TableColumn<?, ?> description;
     @FXML private TextArea descriptionInput;
     @FXML private TableColumn<?, ?> end;
     @FXML private DatePicker endDatePicker;
-    @FXML private ComboBox<?> endTimeDropdown;
+    @FXML private ComboBox<LocalTime> endTimeDropdown;
     @FXML private TextField idInput;
     @FXML private TableColumn<?, ?> locationColumn;
     @FXML private TextField locationInput;
@@ -60,7 +60,7 @@ public class AppointmentsPageController {
     @FXML private Button showAllBtn;
     @FXML private TableColumn<?, ?> start;
     @FXML private DatePicker startDatePicker;
-    @FXML private ComboBox<?> startTimeDropdown;
+    @FXML private ComboBox<LocalTime> startTimeDropdown;
     @FXML private ToggleGroup tableFilter;
     @FXML private TableColumn<?, ?> title;
     @FXML private TextField titleInput;
@@ -80,6 +80,7 @@ public class AppointmentsPageController {
     @FXML public void initialize() throws SQLException {
         //set default id
         idInput.setText("Auto-Generated");
+        userIdInput.setText(String.valueOf(User.getUserId()));
 
         //fill parts table on initialize
         recordsTable.setItems(appointmentsList);
@@ -90,6 +91,7 @@ public class AppointmentsPageController {
         contact.setCellValueFactory(new PropertyValueFactory<>("contact"));
         type.setCellValueFactory(new PropertyValueFactory<>("type"));
         start.setCellValueFactory(new PropertyValueFactory<>("startDateTime"));
+        end.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         end.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         customerID.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         userID.setCellValueFactory(new PropertyValueFactory<>("userId"));
@@ -102,46 +104,183 @@ public class AppointmentsPageController {
 
                 // This code will execute when a row is selected
                 String apptId = String.valueOf(selectedAppt.getAppointmentId());
+                String title = String.valueOf(selectedAppt.getTitle());
+                String description = String.valueOf(selectedAppt.getDescription());
+                String location = String.valueOf(selectedAppt.getLocation());
+                String contact = String.valueOf(selectedAppt.getContact());
+                String type = String.valueOf(selectedAppt.getType());
+                LocalDateTime startDateTime = selectedAppt.getStartDateTime();
+                LocalDateTime endDateTime = selectedAppt.getEndDateTime();
+                String custID= String.valueOf(selectedAppt.getCustomerId());
+                String userID = String.valueOf(selectedAppt.getUserId());
+
                 idInput.setText(apptId);
+                titleInput.setText(title);
+                descriptionInput.setText(description);
+                locationInput.setText(location);
+                contactDropdown.getSelectionModel().select(Integer.valueOf(contact));
+                typeInput.setText(type);
+                startDatePicker.setValue(startDateTime.toLocalDate());
+                startTimeDropdown.setValue(startDateTime.toLocalTime());
+                endDatePicker.setValue(endDateTime.toLocalDate());
+                endTimeDropdown.setValue(endDateTime.toLocalTime());
+                customerDropdown2.getSelectionModel().select(Integer.valueOf(custID));;
+                userIdInput.setText(userID);
 
                 //disable buttons
                 addBtn.setDisable(true);
                 modifyBtn.setDisable(false);
                 deleteBtn.setDisable(false);
             }
+
         });
 
         //fill dropdown menus
         try {
             //contacts
-            ObservableList<String> contactsList = DataAccessObject.getContacts();
+            ObservableList<Integer> contactsList = DataAccessObject.getContacts();
             contactDropdown.setItems(contactsList);
 
             //customers
             ObservableList<Integer> customerList = DataAccessObject.getCustomerIDs();
             customerDropdown.setItems(customerList);
+            customerDropdown2.setItems(customerList);
 
             //if error
         } catch (SQLException e) {
             System.out.println("Error getting contacts");
         }
 
-        //customer dropdown listener
-//        customerDropdown.setOnAction(e -> filterByCustomer());
+        //fill time dropdowns
+        ObservableList<LocalTime> timesList = myHelpers.getTimes();
+        startTimeDropdown.setItems(timesList);
+        endTimeDropdown.setItems(timesList);
     }
 
     /**
      * adds a new records
      */
-    @FXML void addRecord() {
+    @FXML void addRecord() throws SQLException {
+        //get inputs
+        String title = titleInput.getText();
+        String description = descriptionInput.getText();
+        String location = locationInput.getText();
+        String type = typeInput.getText();
+        LocalDate startDate  = startDatePicker.getValue();
+        LocalTime startTime = startTimeDropdown.getValue();
+        LocalDate endDate  = endDatePicker.getValue();
+        LocalTime endTime = endTimeDropdown.getValue();
+        int custId;
+        int userId;
 
+        String contact = String.valueOf(contactDropdown.getValue());
+        try {
+            custId = customerDropdown2.getValue();
+            userId = Integer.parseInt(userIdInput.getText());
+        } catch (Exception err) {
+            myHelpers.showAlert("Invalid Inputs", "Inputs cannot be empty");
+            return;
+        }
+
+        //validate not empty
+        if (myHelpers.isAnyEmpty( title, description, location, contact, type)) {
+            myHelpers.showAlert("Invalid Inputs", "Inputs cannot be empty.");
+            return;
+        }
+
+        if (startDate == null || startTime == null || endDate == null || endTime == null) {
+            myHelpers.showAlert("Invalid Inputs", "Dates & times cannot be empty.");
+            return;
+        }
+
+        //validate start and end date
+        if (!endDate.equals(startDate)) {
+            myHelpers.showAlert("Invalid Inputs", "Start date must equal end date.");
+            return;
+        }
+
+        //validate end after start
+        if (!(endTime.isAfter(startTime))) {
+            myHelpers.showAlert("Time Error", "End Time must be after start time.");
+            return;
+        }
+
+        //validate hours
+        if (!myHelpers.isValidAppointment(startTime,endTime)) {
+            myHelpers.showAlert("DateTime Error", "Must be between 8a-10p EST.");
+            return;
+        }
+
+        //validate day selected and  not saturday/ sunday
+        if (
+                startDate.getDayOfWeek() == DayOfWeek.SATURDAY
+                        || startDate.getDayOfWeek() == DayOfWeek.SUNDAY
+                || endDate.getDayOfWeek() == DayOfWeek.SATURDAY
+                || endDate.getDayOfWeek() == DayOfWeek.SUNDAY
+        ) {
+            myHelpers.showAlert("Time Error", "Must be between Monday and Friday");
+            return;
+        }
+
+        //combine
+        LocalDateTime startDateTime = startDate.atTime(startTime);
+        LocalDateTime endDateTime = endDate.atTime(endTime);
+
+        //validate no overlap
+        if (myHelpers.doesAppointmentOverlap(startDateTime,endDateTime)) {
+            myHelpers.showAlert("Date Error", "Appointment overlaps with another. Please verify date/time.");
+            return;
+        }
+
+        //create object
+        Appointment appointment = new Appointment(
+                -1,
+                title,
+                description,
+                location,
+                Integer.parseInt(contact),
+                type,
+                startDateTime,
+                endDateTime,
+                custId,
+                userId
+                );
+
+        //post to DB
+        int newAppointmentId = DataAccessObject.addAppointment(appointment);
+
+        //if error posting
+        if (newAppointmentId == -1) {
+            myHelpers.showAlert("DB Error", "Unable to Complete DB Transaction.");
+            return;
+        }
+        appointment.setAppointmentId(newAppointmentId);
+        appointmentObservableList.add(appointment);
+        clearRecord();
     }
 
     /**
      * clears the selected record
      */
     @FXML void clearRecord() {
-        System.out.println("clear record");
+        //clears inputs
+        idInput.setText("Auto-Generated");
+        userIdInput.setText(String.valueOf(User.getUserId()));
+        titleInput.clear();
+        descriptionInput.clear();
+        locationInput.clear();
+        contactDropdown.setValue(null);
+        typeInput.clear();
+        startDatePicker.getEditor().clear();
+        startTimeDropdown.setValue(null);
+        endDatePicker.getEditor().clear();
+        endTimeDropdown.setValue(null);
+        customerDropdown2.setValue(null);
+
+        //disable buttons
+        addBtn.setDisable(false);
+        modifyBtn.setDisable(true);
+        deleteBtn.setDisable(true);
     }
 
     /**
@@ -157,8 +296,9 @@ public class AppointmentsPageController {
 
         //handle response
         if (noErrs) {
+            recordsTable.getSelectionModel().clearSelection();
             clearRecord();
-            appointmentsList.remove(appointment);
+            appointmentsList.getSource().remove(appointment);
         } else {
             myHelpers.showAlert("DB Error", "Unable to Delete Record");
         }
@@ -201,7 +341,6 @@ public class AppointmentsPageController {
         });
     }
 
-
     /**
      * shows main menu
      */
@@ -217,8 +356,103 @@ public class AppointmentsPageController {
     /**
      * modify the selected record
      */
-    @FXML void modifyRecord(ActionEvent event) {
+    @FXML void modifyRecord() throws SQLException {
+        //get inputs
+        String title = titleInput.getText();
+        String description = descriptionInput.getText();
+        String location = locationInput.getText();
+        String type = typeInput.getText();
+        LocalDate startDate = startDatePicker.getValue();
+        LocalTime startTime = startTimeDropdown.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        LocalTime endTime = endTimeDropdown.getValue();
+        int custId;
+        int userId = User.getUserId();
 
+        String contact = String.valueOf(contactDropdown.getValue());
+        try {
+            custId = customerDropdown2.getValue();
+        } catch (Exception err) {
+            myHelpers.showAlert("Invalid Inputs", "Inputs cannot be empty");
+            return;
+        }
+
+        //validate not empty
+        if (myHelpers.isAnyEmpty(title, description, location, contact, type)) {
+            myHelpers.showAlert("Invalid Inputs", "Inputs cannot be empty.");
+            return;
+        }
+
+        if (startDate == null || startTime == null || endDate == null || endTime == null) {
+            myHelpers.showAlert("Invalid Inputs", "Dates & times cannot be empty.");
+            return;
+        }
+
+        //validate start and end date
+        if (!endDate.equals(startDate)) {
+            myHelpers.showAlert("Invalid Inputs", "Start date must equal end date.");
+            return;
+        }
+
+        //validate end after start
+        if (!(endTime.isAfter(startTime))) {
+            myHelpers.showAlert("Time Error", "End Time must be after start time.");
+            return;
+        }
+
+        //validate hours
+        if (!myHelpers.isValidAppointment(startTime, endTime)) {
+            myHelpers.showAlert("DateTime Error", "Must be between 8a-10p EST.");
+            return;
+        }
+
+        //validate day selected and not saturday/ sunday
+        if (
+                startDate.getDayOfWeek() == DayOfWeek.SATURDAY
+                        || startDate.getDayOfWeek() == DayOfWeek.SUNDAY
+                        || endDate.getDayOfWeek() == DayOfWeek.SATURDAY
+                        || endDate.getDayOfWeek() == DayOfWeek.SUNDAY
+        ) {
+            myHelpers.showAlert("Time Error", "Must be between Monday and Friday");
+            return;
+        }
+
+        //combine
+        LocalDateTime startDateTime = startDate.atTime(startTime);
+        LocalDateTime endDateTime = endDate.atTime(endTime);
+
+        //validate no overlap, if input modified
+        if (!appointment.getStartDateTime().equals(startDateTime) && !appointment.getEndDateTime().equals(endDateTime)) {
+            if (myHelpers.doesAppointmentOverlap(startDateTime, endDateTime)) {
+                myHelpers.showAlert("Date Error", "Appointment overlaps with another. Please verify date/time.");
+                return;
+            }
+        }
+
+        //create object
+        Appointment appointment = new Appointment(
+                this.appointment.getAppointmentId(),
+                title,
+                description,
+                location,
+                Integer.parseInt(contact),
+                type,
+                startDateTime,
+                endDateTime,
+                custId,
+                userId
+        );
+
+        //post to DB
+        //if error posting
+        if (!DataAccessObject.modifyAppointment(appointment)) {
+            myHelpers.showAlert("DB Error", "Unable to Complete DB Transaction.");
+            return;
+        }
+
+        int idx = appointmentObservableList.indexOf(this.appointment);
+        appointmentObservableList.set(idx,appointment);
+        clearRecord();
     }
 
     /**
