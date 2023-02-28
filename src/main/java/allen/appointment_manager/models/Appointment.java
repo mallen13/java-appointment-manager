@@ -10,7 +10,7 @@ public class Appointment {
     private String title;
     private String description;
     private String location;
-    private int contact;
+    private String contact;
     private String type;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
@@ -30,7 +30,7 @@ public class Appointment {
      * @param customerId
      * @param userId
      */
-    public Appointment(int appointmentId, String title, String description, String location, int contact, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId) {
+    public Appointment(int appointmentId, String title, String description, String location, String contact, String type, LocalDateTime startDateTime, LocalDateTime endDateTime, int customerId, int userId) {
         this.appointmentId = appointmentId;
         this.title = title;
         this.description = description;
@@ -99,16 +99,10 @@ public class Appointment {
     /**
      * gets appointment contact
      */
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    /**
-     * sets appointment id
-     */
-    public void setContact(int contact) {
-        this.contact = contact;
-    }
 
     /**
      * gets appointment type

@@ -156,7 +156,6 @@ public class DataAccessObject {
         return idList;
     }
 
-
     /**
      * returns a list of customers
      * @return customers obersvable list
@@ -294,26 +293,30 @@ public class DataAccessObject {
         ObservableList<Appointment> appointmentsList = FXCollections.observableArrayList();
 
         String query =
-                "SELECT * FROM appointments ";
+                "SELECT * FROM appointments";
 
         PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
+        try {
+            while (rs.next()) {
+                int id = rs.getInt("Appointment_ID");
+                String title = rs.getString("Title");
+                String description = rs.getString("Description");
+                String location = rs.getString("Location");
+                String contact = DataAccessObject.getContactName(rs.getInt("Contact_Id"));
+                LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();  //convert
+                LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();  //convert
+                String type = rs.getString("Type");
+                int customerId = rs.getInt("Customer_ID");
+                int userId = rs.getInt("User_ID");
 
-        while (rs.next()) {
-            int id = rs.getInt("Appointment_ID");
-            String title = rs.getString("Title");
-            String description = rs.getString("Description");
-            String location = rs.getString("Location");
-            int contact = Integer.valueOf(rs.getString("Contact_ID"));
-            LocalDateTime startDateTime = rs.getTimestamp("Start").toLocalDateTime();  //convert
-            LocalDateTime endDateTime = rs.getTimestamp("End").toLocalDateTime();  //convert
-            String type = rs.getString("Type");
-            int customerId = rs.getInt("Customer_ID");
-            int userId = rs.getInt("User_ID");
-
-            Appointment appointment = new Appointment(id,title,description,location,contact,type,startDateTime,endDateTime,customerId,userId);
-            appointmentsList.add(appointment);
+                Appointment appointment = new Appointment(id,title,description,location,contact,type,startDateTime,endDateTime,customerId,userId);
+                appointmentsList.add(appointment);
+            }
+        } catch(Exception e) {
+            System.out.println("Err: " + e);
         }
+
 
         return appointmentsList;
     }
@@ -323,20 +326,63 @@ public class DataAccessObject {
      * @return
      * @throws SQLException
      */
-    public static ObservableList<Integer> getContacts() throws SQLException {
-        ObservableList<Integer> contactList = FXCollections.observableArrayList();
+    public static ObservableList<String> getContactNames() throws SQLException {
+        ObservableList<String> contactList = FXCollections.observableArrayList();
 
-        String query = "SELECT DISTINCT Contact_ID FROM contacts";
+        String query = "SELECT DISTINCT Contact_Name FROM contacts";
 
         PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
         ResultSet rs = ps.executeQuery();
 
         while (rs.next()) {
-            int contact = rs.getInt("Contact_ID");
+            String contact = rs.getString("Contact_Name");
             contactList.add(contact);
         }
 
         return contactList;
+    }
+
+    /**
+     * return a contact id
+     * @param name
+     * @return
+     * @throws SQLException
+     */
+    public static int getContactId(String name) throws SQLException {
+        int contactId = -1;
+
+        String query = "SELECT DISTINCT Contact_ID FROM contacts WHERE Contact_Name = ?";
+
+        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+        ps.setString(1,name);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            contactId = rs.getInt("Contact_ID");
+        }
+
+        return contactId;
+    }
+
+    /**
+     * return a contact name
+     * @return
+     * @throws SQLException
+     */
+    public static String getContactName(int id) throws SQLException {
+        String contactName = null;
+
+        String query = "SELECT DISTINCT Contact_Name FROM contacts WHERE Contact_ID = ?";
+
+        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+        ps.setInt(1,id);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            contactName = rs.getString("Contact_Name");
+        }
+
+        return contactName;
     }
 
     /**
@@ -380,7 +426,7 @@ public class DataAccessObject {
             ps.setInt(8, appointment.getUserId());
             ps.setInt(9, appointment.getCustomerId());
             ps.setInt(10, appointment.getUserId());
-            ps.setInt(11, appointment.getContact());
+            ps.setInt(11, DataAccessObject.getContactId(appointment.getContact()));
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
 
@@ -426,7 +472,7 @@ public class DataAccessObject {
             ps.setInt(8, appointment.getUserId());
             ps.setInt(9, appointment.getCustomerId());
             ps.setInt(10, appointment.getUserId());
-            ps.setInt(11, appointment.getContact());
+            ps.setInt(11, DataAccessObject.getContactId(appointment.getContact()));
             ps.setTimestamp(12, Timestamp.valueOf(LocalDateTime.now()));
             ps.setInt(13, appointment.getUserId());
             ps.setInt(14, appointment.getAppointmentId());

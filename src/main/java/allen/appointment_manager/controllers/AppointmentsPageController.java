@@ -40,7 +40,7 @@ public class AppointmentsPageController {
     @FXML private TableColumn<?, ?> appointmentID;
     @FXML private Button clearBtn;
     @FXML private TableColumn<?, ?> contact;
-    @FXML private ComboBox<Integer> contactDropdown;
+    @FXML private ComboBox<String> contactDropdown;
     @FXML private ComboBox<Integer> customerDropdown;
     @FXML private ComboBox<Integer> customerDropdown2;
     @FXML private TableColumn<?, ?> customerID;
@@ -76,6 +76,7 @@ public class AppointmentsPageController {
 
     /**
      *setup class and listeners, fill table
+     * LAMBDA: used when adding a required callback argument for the add button event handler. Easier than creating a full method in the namespace.
      */
     @FXML public void initialize() throws SQLException {
         //set default id
@@ -118,13 +119,13 @@ public class AppointmentsPageController {
                 titleInput.setText(title);
                 descriptionInput.setText(description);
                 locationInput.setText(location);
-                contactDropdown.getSelectionModel().select(Integer.valueOf(contact));
+                contactDropdown.getSelectionModel().select(contact);
                 typeInput.setText(type);
                 startDatePicker.setValue(startDateTime.toLocalDate());
                 startTimeDropdown.setValue(startDateTime.toLocalTime());
                 endDatePicker.setValue(endDateTime.toLocalDate());
                 endTimeDropdown.setValue(endDateTime.toLocalTime());
-                customerDropdown2.getSelectionModel().select(Integer.valueOf(custID));;
+                customerDropdown2.getSelectionModel().select(Integer.valueOf(custID));
                 userIdInput.setText(userID);
 
                 //disable buttons
@@ -138,10 +139,10 @@ public class AppointmentsPageController {
         //fill dropdown menus
         try {
             //contacts
-            ObservableList<Integer> contactsList = DataAccessObject.getContacts();
+            ObservableList<String> contactsList = DataAccessObject.getContactNames();
             contactDropdown.setItems(contactsList);
 
-            //customers
+            //customers id's
             ObservableList<Integer> customerList = DataAccessObject.getCustomerIDs();
             customerDropdown.setItems(customerList);
             customerDropdown2.setItems(customerList);
@@ -152,9 +153,18 @@ public class AppointmentsPageController {
         }
 
         //fill time dropdowns
-        ObservableList<LocalTime> timesList = myHelpers.getTimes();
+        ObservableList<LocalTime> timesList = Helpers.getTimes();
         startTimeDropdown.setItems(timesList);
         endTimeDropdown.setItems(timesList);
+
+        //event listener lambda
+        addBtn.setOnAction(event -> {
+            try {
+                this.addRecord();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
@@ -238,7 +248,7 @@ public class AppointmentsPageController {
                 title,
                 description,
                 location,
-                Integer.parseInt(contact),
+                contact,
                 type,
                 startDateTime,
                 endDateTime,
@@ -248,6 +258,7 @@ public class AppointmentsPageController {
 
         //post to DB
         int newAppointmentId = DataAccessObject.addAppointment(appointment);
+        System.out.println("id: " + newAppointmentId);
 
         //if error posting
         if (newAppointmentId == -1) {
@@ -306,6 +317,7 @@ public class AppointmentsPageController {
 
     /**
      * filters records table by customer
+     * LAMBDA: allows for a quick and easy way to to pass a callback as an argument when filtering appointments
      */
     @FXML void filterByCustomer() {
         appointmentsList.setPredicate(
@@ -435,7 +447,7 @@ public class AppointmentsPageController {
                 title,
                 description,
                 location,
-                Integer.parseInt(contact),
+                contact,
                 type,
                 startDateTime,
                 endDateTime,

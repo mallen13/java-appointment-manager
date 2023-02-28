@@ -1,20 +1,20 @@
 package allen.appointment_manager.controllers;
 
-import allen.appointment_manager.Main;
+import allen.appointment_manager.models.Appointment;
 import allen.appointment_manager.models.DataAccessObject;
 import allen.appointment_manager.models.User;
 import allen.appointment_manager.helpers.Helpers;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -37,8 +37,10 @@ public class LoginController {
     @FXML private Text usernameLabel;
     @FXML private Text passwordLabel;
 
-    //Log Login Attempts to login_activity.txt whether the attempt passed or failed
-    public void logLoginAttempt(User user, boolean success) {
+    /**
+     * Log Login Attempts to login_activity.txt whether the attempt passed or failed
+     */
+    private void logLoginAttempt(User user, boolean success) {
         String fileName = "login_activity.txt";
         String message = "userId: " + user.getUserId() + ", " +
                 (success ? "status: succeeded," : "status: failed") + " dateTime: " +
@@ -52,6 +54,36 @@ public class LoginController {
         }
     }
 
+    /**
+     * check if appointment within next 15 mins
+     */
+
+    private void checkForAppts() throws SQLException {
+        boolean noAppts = true;
+
+        //get appointment times
+        ObservableList<Appointment> appointmentsList = DataAccessObject.getAppointments();
+        //loop through appointmentsList
+        for (Appointment appointment: appointmentsList) {
+            //if any start time is within now through the next 15 mins, return true
+            Duration duration = Duration.between(LocalDateTime.now(), appointment.getStartDateTime());
+
+            long diff = Math.abs(duration.toMinutes());
+            if (diff <= 15 && diff >= 0) {
+                myHelpers.showAlert(
+                        "Upcoming Appointment",
+                        "Upcoming Appointment: \n" + "ID: " + appointment.getAppointmentId() + "\nDATE/TIME: " + appointment.getStartDateTime()
+                );
+                noAppts = false;
+            }
+        }
+
+
+
+        if (noAppts) {
+            myHelpers.showAlert("Upcoming Appointment", "No upcoming appointments");
+        }
+    }
 
     /**
      * Initiate Sign-In Process
@@ -59,7 +91,7 @@ public class LoginController {
      * If the helper were passed directly into the inputs it would be executed before being called, so wrapping
      * it in the lambda allowed the changeScene helper to only be called as needed.
      */
-    @FXML void login(ActionEvent event) throws IOException {
+    @FXML void login(ActionEvent event) throws IOException, SQLException {
         //variable initialization
         String username = usernameInput.getText();
         String password = passwordInput.getText();
@@ -84,8 +116,6 @@ public class LoginController {
             myHelpers.showAlert(invalidTitle,invalidCredentials);
             logLoginAttempt(user,false);
             return;
-
-        //if login success
         }
 
         //set user
@@ -94,6 +124,10 @@ public class LoginController {
         //log to documents
         logLoginAttempt(user,true);
 
+        //get appointment alert
+        checkForAppts();
+
+        //change scene
         myHelpers.changeScene(
                 "mainMenu.fxml",
                 600, 400,

@@ -17,7 +17,7 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("loginForm.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        //FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("appointmentsPage.fxml"));
+        //FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("reportsPage.fxml"));
         //Scene scene = new Scene(fxmlLoader.load(), 1063, 739);
         stage.setTitle("Appointment Management App");
         stage.setScene(scene);

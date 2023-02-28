@@ -29,7 +29,7 @@
             <TableColumn fx:id="userID" minWidth="8.08367919921875" prefWidth="77.7928466796875" text="User ID" />
         </columns>
       </TableView>
-      <Button fx:id="addBtn" layoutX="391.0" layoutY="428.0" mnemonicParsing="false" onAction="#addRecord" prefHeight="25.0" prefWidth="41.0" text="Add" />
+      <Button fx:id="addBtn" layoutX="391.0" layoutY="428.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="41.0" text="Add" />
       <Button fx:id="clearBtn" layoutX="613.0" layoutY="428.0" mnemonicParsing="false" onAction="#clearRecord" text="Clear" />
       <Button fx:id="modifyBtn" layoutX="465.0" layoutY="428.0" mnemonicParsing="false" onAction="#modifyRecord" text="Modify" />
       <Button fx:id="deleteBtn" layoutX="539.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteRecord" text="Delete" />
@@ -71,7 +71,7 @@
       <ComboBox fx:id="endTimeDropdown" layoutX="860.0" layoutY="188.0" prefHeight="25.0" prefWidth="161.0" promptText="End Time " />
       <DatePicker fx:id="startDatePicker" layoutX="657.0" layoutY="148.0" prefHeight="26.0" prefWidth="182.0" />
       <DatePicker fx:id="endDatePicker" layoutX="657.0" layoutY="188.0" prefHeight="26.0" prefWidth="182.0" />
-      <Label layoutX="650.0" layoutY="228.0" text="Note: Time Displayed in Users zone, based on EST availability (8-10)" />
+      <Label layoutX="650.0" layoutY="228.0" text="Note: Selections Displayed in Users zone, based on EST availability (8-10)" />
       <ComboBox fx:id="customerDropdown2" layoutX="652.0" layoutY="307.0" prefHeight="25.0" prefWidth="182.0" promptText="Customer ID" />
    </children>
 </AnchorPane>
