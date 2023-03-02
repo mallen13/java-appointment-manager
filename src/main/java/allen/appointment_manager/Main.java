@@ -15,10 +15,10 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("loginForm.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
-        //FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("reportsPage.fxml"));
-        //Scene scene = new Scene(fxmlLoader.load(), 1063, 739);
+        //FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("loginForm.fxml"));
+        //Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("reportsPage.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1063, 739);
         stage.setTitle("Appointment Management App");
         stage.setScene(scene);
         stage.show();
@@ -30,5 +30,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         DatabaseConnector.openConnection();
         launch();
+
     }
 }

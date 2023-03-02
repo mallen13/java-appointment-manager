@@ -8,21 +8,21 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="739.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.ReportsPageController">
+<AnchorPane prefHeight="739.0" prefWidth="1063.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.ReportsPageController">
    <children>
-      <TableView fx:id="recordsTable" layoutX="22.0" layoutY="493.0" prefHeight="200.0" prefWidth="1017.0">
-        <columns>
-          <TableColumn prefWidth="95.0" text="Appointment ID" />
-          <TableColumn minWidth="0.0" prefWidth="0.0" text="Title" />
-            <TableColumn minWidth="0.0" prefWidth="193.0" text="Description" />
-            <TableColumn minWidth="0.0" prefWidth="68.0" text="Location" />
-            <TableColumn prefWidth="101.0" text="Contact" />
-            <TableColumn minWidth="0.0" prefWidth="74.0" text="Type" />
-            <TableColumn minWidth="7.0" prefWidth="190.0" text="Start Date/ Time " />
-            <TableColumn minWidth="3.0" prefWidth="128.0" text="End Date/ TIme" />
-            <TableColumn prefWidth="92.0" text="Customer ID" />
-            <TableColumn prefWidth="75.0" text="User ID" />
-        </columns>
+      <TableView fx:id="recordsTable2" layoutX="22.0" layoutY="493.0" prefHeight="200.0" prefWidth="1017.0">
+         <columns>
+            <TableColumn fx:id="apptID" prefWidth="106.0" text="Appointment ID" />
+            <TableColumn fx:id="title1" minWidth="0.0" prefWidth="112.0" text="Title" />
+            <TableColumn fx:id="description1" minWidth="0.0" prefWidth="155.0" text="Description" />
+            <TableColumn fx:id="location1" minWidth="0.0" prefWidth="112.0" text="Location" />
+            <TableColumn fx:id="contact1" prefWidth="101.0" text="Contact" />
+            <TableColumn fx:id="type1" minWidth="0.0" prefWidth="81.0" text="Type" />
+            <TableColumn fx:id="start1" minWidth="7.0" prefWidth="113.0" text="Start Date/ Time " />
+            <TableColumn fx:id="end1" minWidth="3.0" prefWidth="102.0" text="End Date/ TIme" />
+            <TableColumn fx:id="custID1" minWidth="0.0" prefWidth="75.0" text="Customer ID" />
+            <TableColumn fx:id="userID1" prefWidth="59.0" text="User ID" />
+         </columns>
       </TableView>
       <Label layoutX="502.0" layoutY="40.0" text="Reports">
          <font>
@@ -33,21 +33,16 @@
       <Label layoutX="87.0" layoutY="418.0" text="Schedule:" />
       <TableView fx:id="report1Table" layoutX="85.0" layoutY="148.0" prefHeight="200.0" prefWidth="393.0">
          <columns>
-            <TableColumn prefWidth="84.0" text="Month" />
-            <TableColumn prefWidth="154.0" text="Type" />
-            <TableColumn prefWidth="137.0" text="Count" />
-            <TableColumn minWidth="0.0" prefWidth="133.0" text="Postal Code" />
-            <TableColumn prefWidth="101.0" text="Phone Number" />
-            <TableColumn prefWidth="129.0" text="Country" />
-            <TableColumn prefWidth="147.0" text="State/Province" />
+            <TableColumn fx:id="r1Month" prefWidth="84.0" text="Month" />
+            <TableColumn fx:id="r1Type" prefWidth="154.0" text="Type" />
+            <TableColumn fx:id="r1Count" minWidth="0.0" prefWidth="154.0" text="Count" />
          </columns>
       </TableView>
       <Label layoutX="88.0" layoutY="109.0" text="Customers by Month and type:" />
       <TableView fx:id="report2Table" layoutX="599.0" layoutY="148.0" prefHeight="200.0" prefWidth="384.0">
          <columns>
-            <TableColumn prefWidth="110.0" text="Customer ID" />
-            <TableColumn prefWidth="275.0" text="Count" />
-            <TableColumn minWidth="0.0" prefWidth="0.0" />
+            <TableColumn fx:id="r2CustID" prefWidth="110.0" text="Customer ID" />
+            <TableColumn fx:id="r2Count" prefWidth="275.0" text="Count" />
          </columns>
       </TableView>
       <Label layoutX="599.0" layoutY="109.0" text="Appointment Count by Customer:" />

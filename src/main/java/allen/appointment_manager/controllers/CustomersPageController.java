@@ -29,7 +29,7 @@ public class CustomersPageController {
     @FXML private TextField nameInput;
     @FXML private TextField phoneNumberInput;
     @FXML private TextField postalCodeInput;
-    @FXML private TextField countryInput;
+    @FXML private ComboBox<String> countryInput;
     @FXML private TableView<Customer> recordsTable;
     @FXML private ComboBox<String> stateDropdown;
 
@@ -73,7 +73,7 @@ public class CustomersPageController {
                 postalCodeInput.setText(selectedCustomer.getPostalCode());
                 phoneNumberInput.setText(selectedCustomer.getPhoneNumber());
                 stateDropdown.setValue(selectedCustomer.getStateProvince());
-                countryInput.setText(selectedCustomer.getCountry());
+                countryInput.setValue(selectedCustomer.getCountry());
 
                 //disable buttons
                 addBtn.setDisable(true);
@@ -86,6 +86,10 @@ public class CustomersPageController {
         try {
             ObservableList<String> divisionList = DataAccessObject.getDivisions();
             stateDropdown.setItems(divisionList);
+
+            ObservableList<String> countryList = DataAccessObject.getCountries();
+            countryInput.setItems(countryList);
+
         //if error
         } catch (SQLException e) {
             System.out.println("Error getting countries and states");
@@ -94,10 +98,27 @@ public class CustomersPageController {
         //listen for dropdown select
         stateDropdown.setOnAction(event -> {
             String selectedValue = stateDropdown.getValue();
+
+            if (selectedValue == null) {
+                return;
+            }
+
             // perform some action based on the selected value
             String country = DataAccessObject.getCountryByDivision(selectedValue);
-            countryInput.setText(country);
+            countryInput.setValue(country);
         });
+
+        countryInput.setOnAction(event -> {
+            String selectedValue = countryInput.getValue();
+            // perform some action based on the selected value
+            ObservableList<String> divisionList = DataAccessObject.getDivisionsByCountry(selectedValue);
+
+            if (!divisionList.contains(stateDropdown.getValue())) {
+                stateDropdown.setItems(divisionList);
+            }
+
+        });
+
     }
 
     /**
@@ -110,9 +131,9 @@ public class CustomersPageController {
         addressInput.clear();
         postalCodeInput.clear();
         phoneNumberInput.clear();
-        countryInput.clear();
         idInput.setText("Auto-Generated");
         stateDropdown.setValue(null);
+        countryInput.setValue(null);
 
         //disable buttons
         addBtn.setDisable(false);
@@ -130,7 +151,7 @@ public class CustomersPageController {
         String address = addressInput.getText();
         String postalCode = postalCodeInput.getText();
         String phoneNum = phoneNumberInput.getText();
-        String country = countryInput.getText();
+        String country = countryInput.getSelectionModel().getSelectedItem();
         String state = stateDropdown.getSelectionModel().getSelectedItem();
 
         //validate inputs
@@ -160,7 +181,6 @@ public class CustomersPageController {
                 myHelpers.showAlert("DB Error", "Unable to Complete DB Transaction.");
             } else {
                 customer.setId(newCustomerId);
-                System.out.println(customer.getId());
                 customerList.add(customer);
                 clearRecord();
             }
@@ -171,12 +191,20 @@ public class CustomersPageController {
     /**
      * delete selected record
      */
-    @FXML void deleteRecord(ActionEvent event) {
+    @FXML void deleteRecord(ActionEvent event) throws SQLException {
         //attempt remove
         if (!myHelpers.showConfirm("Delete Record", "Are you sure you want to delete this record?") ) {
             return;
         }
         int delId = customer.getId();
+
+        //check if valid appointments
+        if (DataAccessObject.customerHasAppts(customer.getId())) {
+            myHelpers.showAlert("Delete Record", "Customer has appointments, unable to delete");
+            return;
+        }
+
+        //query DB
         boolean noErrs = DataAccessObject.deleteFromCustomers(delId);
 
         //handle response
@@ -209,7 +237,7 @@ public class CustomersPageController {
         String address = addressInput.getText();
         String postalCode = postalCodeInput.getText();
         String phoneNum = phoneNumberInput.getText();
-        String country = countryInput.getText();
+        String country = countryInput.getSelectionModel().getSelectedItem();
         String state = stateDropdown.getSelectionModel().getSelectedItem();
 
         //validate inputs

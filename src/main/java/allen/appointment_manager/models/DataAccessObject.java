@@ -1,14 +1,11 @@
 package allen.appointment_manager.models;
 
 import allen.appointment_manager.helpers.DatabaseConnector;
-import allen.appointment_manager.helpers.Helpers;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * model that contains method for working with the back end database
@@ -85,7 +82,6 @@ public class DataAccessObject {
         return divisionList;
     }
 
-
     /**
      * get country based on division name
      */
@@ -110,6 +106,34 @@ public class DataAccessObject {
         }
 
         return country;
+    }
+
+
+    /**
+     * get country based on division names
+     */
+    public static ObservableList<String> getDivisionsByCountry(String CountryName) {
+        ObservableList<String> divisionList = FXCollections.observableArrayList();
+
+        String query =
+                "SELECT DISTINCT d.division FROM first_level_divisions d " +
+                "JOIN countries c ON d.country_id = c.country_id " +
+                "WHERE c.country = ?";
+
+        try {
+            PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+            ps.setString(1, CountryName);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String countryName = rs.getString("Division");
+                divisionList.add(countryName);
+            }
+        } catch(Exception e) {
+            System.out.println("DB Err: " + e);
+        }
+
+        return divisionList;
     }
 
     /**
@@ -319,6 +343,28 @@ public class DataAccessObject {
 
 
         return appointmentsList;
+    }
+
+    /**
+     * gets a list of appointments
+     * @return
+     * @throws SQLException
+     */
+    public static boolean customerHasAppts(int id) throws SQLException {
+
+        String query = "SELECT COUNT(*) FROM appointments WHERE customer_ID = ?";
+        PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+
+        try {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) >= 1) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("DB err:" + e);
+        }
+        return false;
     }
 
     /**

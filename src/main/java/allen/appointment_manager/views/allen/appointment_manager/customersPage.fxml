@@ -30,7 +30,6 @@
       <TextField fx:id="nameInput" layoutX="335.0" layoutY="155.0" />
       <TextField fx:id="addressInput" layoutX="335.0" layoutY="196.0" />
       <TextField fx:id="postalCodeInput" layoutX="335.0" layoutY="234.0" />
-      <TextField fx:id="countryInput" disable="true" editable="false" layoutX="602.0" layoutY="318.0" />
       <Label layoutX="214.0" layoutY="322.0" prefHeight="17.0" prefWidth="83.0" text="State/Province" />
       <Button fx:id="addBtn" layoutX="383.0" layoutY="413.0" mnemonicParsing="false" onAction="#addRecord" prefHeight="25.0" prefWidth="41.0" text="Add" />
       <Button fx:id="clearBtn" layoutX="621.0" layoutY="413.0" mnemonicParsing="false" onAction="#clearRecord" text="Clear" />
@@ -47,5 +46,6 @@
       <TextField fx:id="idInput" disable="true" layoutX="333.0" layoutY="118.0" />
       <Label layoutX="283.0" layoutY="418.0" prefHeight="17.0" prefWidth="55.0" text="Records:" />
       <TextField fx:id="phoneNumberInput" layoutX="335.0" layoutY="274.0" />
+      <ComboBox fx:id="countryInput" layoutX="598.0" layoutY="318.0" prefHeight="25.0" prefWidth="161.0" promptText="Select A Value" />
    </children>
 </AnchorPane>
