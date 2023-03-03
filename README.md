@@ -12,7 +12,6 @@ Application features include:
 - backend MySQL database that stores data in UTC
 
 Additional Features:
-s
 - various alerts for input and login validations
 - upcoming appointment notifications
 - ensuring no customers deleted with active appointments 
@@ -48,20 +47,20 @@ MySQL Connector Driver Version: mysql-connector-java-8.0.25.
 
 ### Login Page:
 
-![loginPage](https://github.com/mallen13/java-appointment-manager/blob/master/appointmentsPage.png)
+![loginPage](https://github.com/mallen13/java-appointment-manager/blob/master/appointmentsPage.PNG)
 
 
 ### Customers Page:
 
-![customersPage](https://github.com/mallen13/java-appointment-manager/blob/master/customersPage.png)
+![customersPage](https://github.com/mallen13/java-appointment-manager/blob/master/customersPage.PNG)
 
 
 ### Appointments Page:
 
-![appointmentsPage](https://github.com/mallen13/java-appointment-manager/blob/master/AppointmentsPage.png)
+![appointmentsPage](https://github.com/mallen13/java-appointment-manager/blob/master/AppointmentsPage.PNG)
 
 
 ### Reports Page:
 
-![reportsPage](https://github.com/mallen13/java-appointment-manager/blob/master/reportsPage.png)
+![reportsPage](https://github.com/mallen13/java-appointment-manager/blob/master/reportsPage.PNG)
 
