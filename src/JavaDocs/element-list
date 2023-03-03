@@ -1,0 +1,5 @@
+module:allen.appointment_manager
+allen.appointment_manager
+allen.appointment_manager.controllers
+allen.appointment_manager.helpers
+allen.appointment_manager.models
