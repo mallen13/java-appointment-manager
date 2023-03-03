@@ -1,7 +1,7 @@
 # Inventory Management System
 ## Purpose
 
-The purpose of this application is to provide a user-friendly interface to manage appointments and customers. The application will allow the user to add, modifys, delete, and view customers/ appointments, and well as generate reports.
+The purpose of this application is to provide a user-friendly interface to manage appointments and customers. The application will allow the user to add, modify, delete, and view customers/ appointments, as well as generate reports.
 
 ## About
 Application features include:
@@ -9,7 +9,7 @@ Application features include:
 - login page that will display in French if that is the user's locale
 - customers page that allows for viewing, editing, adding, and deleting 
 - appointments page that displays in the users local time zone
-- backend MySQL database that stores data in UTC
+- backend MySQL database that stores data in UTC, then converts to users time in UI
 
 Additional Features:
 - various alerts for input and login validations
@@ -30,18 +30,18 @@ Additional Features:
 
 ## Directions to Run the Program
 
-- Open the project in IntelliJ IDEA.
-- Make sure that the JDK and JavaFX-SDK are properly setup.
-- Run the Main class in the src directory.
-- The application will open in a new window.
+- Open the project in IntelliJ IDEA
+- Make sure that the JDK and JavaFX-SDK are properly setup
+- Run the Main class in the src directory
+- The application will open in a new window
 
 ## Additional Reports Description
-- The first report shows the number of appointments by month and type.
-- The second appointment shows the number of appointments by customer.
-- The third report shows appointments by contact name.
+- The first report shows the number of appointments by month and type
+- The second appointment shows the number of appointments by customer
+- The third report shows appointments by contact name
 
 ## MYSQL Connector Driver
-MySQL Connector Driver Version: mysql-connector-java-8.0.25.
+MySQL Connector Driver Version: mysql-connector-java-8.0.25
 
 ## Screenshots
 
