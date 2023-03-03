@@ -48,5 +48,6 @@
       <Label layoutX="599.0" layoutY="109.0" text="Appointment Count by Customer:" />
       <ComboBox fx:id="contactFilterDropdown" layoutX="177.0" layoutY="451.0" onAction="#filterByContact" prefWidth="150.0" promptText="Contact" />
       <Label layoutX="88.0" layoutY="455.0" text="Contact" />
+      <Button fx:id="clearBtn" layoutX="355.0" layoutY="451.0" mnemonicParsing="false" onAction="#clearFilter" text="Clear" />
    </children>
 </AnchorPane>

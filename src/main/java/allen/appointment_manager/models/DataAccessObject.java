@@ -536,4 +536,62 @@ public class DataAccessObject {
         }
         return true;
     }
+
+    /**
+     * report #1, customers by month and type
+     */
+    public static ObservableList<ReportOne> getReportOne() {
+        ObservableList<ReportOne> reportList = FXCollections.observableArrayList();
+
+        String query =
+                "SELECT MONTH(start) month, type, COUNT(*) count " +
+                "FROM appointments " +
+                "GROUP BY 1,2 " +
+                "ORDER BY 1";
+
+        try {
+            PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int month = rs.getInt("month");
+                String type = rs.getString("type");
+                int count = rs.getInt("count");
+                reportList.add(new ReportOne(month, type, count));
+            }
+
+        } catch(Exception e) {
+            System.out.println("DB Err: " + e);
+        }
+
+        return reportList;
+    }
+
+    /**
+     * report #2, appointment count by customer ID
+     */
+    public static ObservableList<ReportTwo> getReportTwo() {
+        ObservableList<ReportTwo> reportList = FXCollections.observableArrayList();
+
+        String query =
+                "SELECT customer_id, COUNT(appointment_id) appointments " +
+                "FROM appointments GROUP BY 1";
+
+        try {
+            PreparedStatement ps = DatabaseConnector.getConnection().prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int customer = rs.getInt("customer_id");
+                int count = rs.getInt("appointments");
+                reportList.add(new ReportTwo(customer,count));
+            }
+
+        } catch(Exception e) {
+            System.out.println("DB Err: " + e);
+        }
+
+        return reportList;
+    }
 }
+

@@ -3,6 +3,8 @@ package allen.appointment_manager.controllers;
 import allen.appointment_manager.helpers.Helpers;
 import allen.appointment_manager.models.Appointment;
 import allen.appointment_manager.models.DataAccessObject;
+import allen.appointment_manager.models.ReportOne;
+import allen.appointment_manager.models.ReportTwo;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
@@ -20,12 +22,14 @@ public class ReportsPageController {
 
     Helpers myHelpers = new Helpers();
     ObservableList<Appointment> appointmentObservableList = DataAccessObject.getAppointments();
+    ObservableList<ReportOne> reportOneList= DataAccessObject.getReportOne();
+    ObservableList<ReportTwo> reportTwoList = DataAccessObject.getReportTwo();
     private FilteredList<Appointment> appointmentsList = new FilteredList<>(appointmentObservableList, p -> true);
 
-
+    @FXML private Button clearBtn;
     @FXML private TableColumn<?, ?> apptID;
     @FXML private TableColumn<?, ?> contact1;
-    @FXML private ComboBox<?> contactFilterDropdown;
+    @FXML private ComboBox<String> contactFilterDropdown;
     @FXML private TableColumn<?, ?> custID1;
     @FXML private TableColumn<?, ?> description1;
     @FXML private TableColumn<?, ?> end1;
@@ -37,8 +41,8 @@ public class ReportsPageController {
     @FXML private TableColumn<?, ?> r2Count;
     @FXML private TableColumn<?, ?> r2CustID;
     @FXML private TableView<Appointment> recordsTable2;
-    @FXML private TableView<?> report1Table;
-    @FXML private TableView<?> report2Table;
+    @FXML private TableView<ReportOne> report1Table;
+    @FXML private TableView<ReportTwo> report2Table;
     @FXML private TableColumn<?, ?> start1;
     @FXML private TableColumn<?, ?> title1;
     @FXML private TableColumn<?, ?> type1;
@@ -60,6 +64,28 @@ public class ReportsPageController {
         end1.setCellValueFactory(new PropertyValueFactory<>("endDateTime"));
         custID1.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         userID1.setCellValueFactory(new PropertyValueFactory<>("userId"));
+
+        //fill 1st report
+        report1Table.setItems(reportOneList);
+        r1Month.setCellValueFactory(new PropertyValueFactory<>("month"));
+        r1Type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        r1Count.setCellValueFactory(new PropertyValueFactory<>("count"));
+
+        //fill 2nd report
+        report2Table.setItems(reportTwoList);
+        r2CustID.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        r2Count.setCellValueFactory(new PropertyValueFactory<>("count"));
+
+        //fill dropdown menus
+        try {
+            //contacts
+            ObservableList<String> contactsList = DataAccessObject.getContactNames();
+            contactFilterDropdown.setItems(contactsList);
+
+            //if error
+        } catch (SQLException e) {
+            System.out.println("Error getting contacts");
+        }
     }
 
     /**
@@ -71,11 +97,17 @@ public class ReportsPageController {
 
     /**
      * filters table
-     * @param event
      */
-    @FXML void filterByContact(ActionEvent event) {
-
+    @FXML void filterByContact() {
+        appointmentsList.setPredicate(
+                appointment -> appointment.getContact().equals(contactFilterDropdown.getValue())
+        );
     }
+
+    /**
+     * clears table filter
+     */
+    @FXML void clearFilter() { appointmentsList.setPredicate(null); }
 
     /**
      * Back to main menu
