@@ -17,8 +17,19 @@ import java.sql.SQLException;
  * Customers Page to view, add, modify, or delete
  */
 public class CustomersPageController {
+    /**
+     * selected customer
+     */
     Customer customer = null;
+
+    /**
+     * new helper instance
+     */
     Helpers myHelpers = new Helpers();
+
+    /**
+     * list of customers to populate table
+     */
     ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
     @FXML private Button addBtn;
@@ -115,6 +126,7 @@ public class CustomersPageController {
 
             if (!divisionList.contains(stateDropdown.getValue())) {
                 stateDropdown.setItems(divisionList);
+                stateDropdown.getSelectionModel().clearSelection(); // clear ComboBox value
             }
 
         });

@@ -38,6 +38,11 @@ public class Helpers {
         stage.show();
     };
 
+    /**
+     * evaluate if any input string is empty
+     * @param inputs
+     * @return
+     */
     public boolean isAnyEmpty(String...inputs) {
         for (String input : inputs) {
             if (input.isEmpty() || input == null) {

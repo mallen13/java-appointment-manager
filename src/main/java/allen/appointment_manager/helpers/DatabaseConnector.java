@@ -40,6 +40,10 @@ public abstract class DatabaseConnector {
 
     }
 
+    /**
+     * establishes DB connection
+     * @return
+     */
     public static Connection getConnection() {
         return connection;
     }

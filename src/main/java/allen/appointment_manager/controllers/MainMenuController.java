@@ -13,7 +13,11 @@ import java.io.IOException;
  */
 public class MainMenuController {
 
+    /**
+     * new helper instance
+     */
     Helpers myHelpers = new Helpers();
+
     @FXML private Button appointmentsBtn;
     @FXML private Button customersBtn;
     @FXML private Button exitBtn;
@@ -54,7 +58,6 @@ public class MainMenuController {
     /**
      * Proceeds to reports page
      */
-
     @FXML void showReportsPage(ActionEvent event) throws IOException {
         myHelpers.changeScene(
                 "reportsPage.fxml",

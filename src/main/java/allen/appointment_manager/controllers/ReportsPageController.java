@@ -18,12 +18,34 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.sql.SQLException;
 
+/**
+ * displays auto-generated reports
+ */
 public class ReportsPageController {
 
+    /**
+     * new helper instance
+     */
     Helpers myHelpers = new Helpers();
+
+    /**
+     * list of appointments
+     */
     ObservableList<Appointment> appointmentObservableList = DataAccessObject.getAppointments();
+
+    /**
+     * gets report data
+     */
     ObservableList<ReportOne> reportOneList= DataAccessObject.getReportOne();
+
+    /**
+     * gets report data
+     */
     ObservableList<ReportTwo> reportTwoList = DataAccessObject.getReportTwo();
+
+    /**
+     * gets list of appointments to filter
+     */
     private FilteredList<Appointment> appointmentsList = new FilteredList<>(appointmentObservableList, p -> true);
 
     @FXML private Button clearBtn;

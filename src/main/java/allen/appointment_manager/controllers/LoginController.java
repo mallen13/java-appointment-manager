@@ -25,8 +25,19 @@ import java.util.Locale;
  */
 public class LoginController {
 
+    /**
+     * logged in user
+     */
     User user = new User();
+
+    /**
+     * new helper instance
+     */
     Helpers myHelpers = new Helpers();
+
+    /**
+     * users locale
+     */
     String locale = Locale.getDefault().toString();
 
     @FXML private Text locationLabel;
@@ -57,7 +68,6 @@ public class LoginController {
     /**
      * check if appointment within next 15 mins
      */
-
     private void checkForAppts() throws SQLException {
         boolean noAppts = true;
 

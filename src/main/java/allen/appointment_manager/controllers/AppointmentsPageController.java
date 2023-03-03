@@ -28,8 +28,18 @@ import java.time.temporal.TemporalAdjusters;
  * Manage Appointments
  */
 public class AppointmentsPageController {
+
+    /**
+     * selected appointment
+     */
     Appointment appointment = null;
+
+    /**
+     * new Helpers instance
+     */
     Helpers myHelpers = new Helpers();
+
+
     /**
      * Filtered Part List
      */
@@ -70,13 +80,18 @@ public class AppointmentsPageController {
     @FXML private TextField userIdInput;
     @FXML private RadioButton weekRadioBtn;
 
+    /**
+     * constructor
+     * @throws SQLException
+     */
     public AppointmentsPageController() throws SQLException {
     }
 
 
     /**
-     *setup class and listeners, fill table
-     * LAMBDA: used when adding a required callback argument for the add button event handler. Easier than creating a full method in the namespace.
+     *setup class and listeners, fill table.
+     * LAMBDA: used when adding a required callback argument for the add button event handler
+     * and easier than creating a full method in the namespace.
      */
     @FXML public void initialize() throws SQLException {
         //set default id
