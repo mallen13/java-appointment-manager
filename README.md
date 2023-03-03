@@ -57,7 +57,7 @@ MySQL Connector Driver Version: mysql-connector-java-8.0.25.
 
 ### Appointments Page:
 
-![appointmentsPage](https://github.com/mallen13/java-appointment-manager/blob/master/AppointmentsPage.PNG)
+![appointmentsPage](https://github.com/mallen13/java-appointment-manager/blob/master/appointmentsPage.PNG)
 
 
 ### Reports Page:
