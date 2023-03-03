@@ -1,4 +1,4 @@
-# Inventory Management System
+# Appointment Management System
 ## Purpose
 
 The purpose of this application is to provide a user-friendly interface to manage appointments and customers. The application will allow the user to add, modify, delete, and view customers/ appointments, as well as generate reports.
