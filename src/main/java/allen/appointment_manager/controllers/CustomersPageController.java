@@ -54,6 +54,7 @@ public class CustomersPageController {
 
     /**
      *setup class and listeners, fill table
+     * Lambdas: used here as callbacks for initializing event listeners
      */
     @FXML public void initialize() throws SQLException {
         //get customers

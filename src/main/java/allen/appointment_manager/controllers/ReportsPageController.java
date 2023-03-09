@@ -45,6 +45,7 @@ public class ReportsPageController {
 
     /**
      * gets list of appointments to filter
+     * LAMBDA: used to pass a needed callback when initializing the filtered list
      */
     private FilteredList<Appointment> appointmentsList = new FilteredList<>(appointmentObservableList, p -> true);
 

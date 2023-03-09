@@ -42,6 +42,7 @@ public class AppointmentsPageController {
 
     /**
      * Filtered Part List
+     *  LAMBDA: use to quickly pass in a simple callback argument
      */
     ObservableList<Appointment> appointmentObservableList = DataAccessObject.getAppointments();
     private FilteredList<Appointment> appointmentsList = new FilteredList<>(appointmentObservableList, p -> true);
@@ -313,11 +314,16 @@ public class AppointmentsPageController {
      * deletes the selected record
      */
     @FXML void deleteRecord() throws SQLException {
+        //record to delete
+        int delId = appointment.getAppointmentId();
+        String delType= appointment.getType();
+
         //attempt remove
-        if (!myHelpers.showConfirm("Delete Record", "Are you sure you want to delete this record?") ) {
+        String removeString = "Are you sure you want to delete appointment ID: " + delId + " . Type: " + delType ;
+        if (!myHelpers.showConfirm("Delete Record", removeString) ) {
             return;
         }
-        int delId = appointment.getAppointmentId();
+
         boolean noErrs = DataAccessObject.deleteFromAppointments(delId);
 
         //handle response
@@ -342,6 +348,8 @@ public class AppointmentsPageController {
 
     /**
      * filters records table by month
+     *  LAMBDA: used to pass a needed callback when filtering appointments list as an argument
+     *
      */
     @FXML
     void filterByMonth() {
@@ -357,6 +365,7 @@ public class AppointmentsPageController {
 
     /**
      * filters records table by month
+     * LAMBDA: used to pass a needed callback when filtering appointments list as an argument
      */
     @FXML
     void filterByWeek() {
