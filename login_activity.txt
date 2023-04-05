@@ -1,0 +1,4 @@
+userId: 0, status: failed dateTime: 2023-04-05T16:06:19.8975975
+userId: 1, status: succeeded, dateTime: 2023-04-05T16:06:24.498214
+userId: 2, status: succeeded, dateTime: 2023-04-05T16:15:45.8347774
+userId: 2, status: succeeded, dateTime: 2023-04-05T16:31:42.4519573

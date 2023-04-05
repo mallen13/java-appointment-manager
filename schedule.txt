@@ -1,0 +1,3 @@
+Appointment ID: 2, Title: title, Description: description, Location: location, Contact: Daniel Garcia, Type: De-Briefing, Start Time: 2020-05-29T06:00:00, End Time: 2020-05-29T07:00:00, Customer ID: 2, User ID: 2
+Appointment ID: 24, Title: title, Description: updated description, Location: location, Contact: Li Lee, Type: Planning Session, Start Time: 2023-02-24T06:00:00, End Time: 2023-02-24T06:15:00, Customer ID: 1, User ID: 1
+Appointment ID: 54, Title: checkup, Description: sick visit, Location: main office, Contact: Daniel Garcia, Type: checkup, Start Time: 2023-02-27T17:45:00, End Time: 2023-02-27T19:45:00, Customer ID: 1, User ID: 1
