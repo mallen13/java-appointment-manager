@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -43,6 +45,7 @@ public class CustomersPageController {
     @FXML private ComboBox<String> countryInput;
     @FXML private TableView<Customer> recordsTable;
     @FXML private ComboBox<String> stateDropdown;
+    @FXML private TextField searchInput;
 
     @FXML private TableColumn<Customer, String> address;
     @FXML private TableColumn<Customer, String> country;
@@ -284,6 +287,22 @@ public class CustomersPageController {
             }
 
         }
+    }
+
+    @FXML void searchPatients(KeyEvent event) {
+        String searchTerm = searchInput.getText().toLowerCase();
+        ObservableList<Customer> filteredList = FXCollections.observableArrayList();
+        for (Customer customer : customerList) {
+            if (customer.getName().toLowerCase().contains(searchTerm) ||
+                    customer.getAddress().toLowerCase().contains(searchTerm) ||
+                    customer.getPostalCode().toLowerCase().contains(searchTerm) ||
+                    customer.getPhoneNumber().toLowerCase().contains(searchTerm) ||
+                    customer.getCountry().toLowerCase().contains(searchTerm) ||
+                    customer.getStateProvince().toLowerCase().contains(searchTerm)) {
+                filteredList.add(customer);
+            }
+        }
+        recordsTable.setItems(filteredList);
     }
 
 }

@@ -5,6 +5,7 @@ package allen.appointment_manager.models;
  */
 public class User {
     private static int user_id;
+    private static String user_name;
     private static String timeZone;
 
     /**
@@ -21,6 +22,22 @@ public class User {
      */
     public static int getUserId() {
         return user_id;
+    }
+
+    /**
+     * get user's id
+     * @return user's id
+     */
+    public static String getUserName() {
+        return user_name;
+    }
+
+    /**
+     * get user's id
+     * @return user's id
+     */
+    public void setUserName(String user_name) {
+       this.user_name = user_name;
     }
 
     /**

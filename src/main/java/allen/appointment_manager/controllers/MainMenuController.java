@@ -5,6 +5,7 @@ import allen.appointment_manager.helpers.Helpers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 
@@ -22,7 +23,14 @@ public class MainMenuController {
     @FXML private Button customersBtn;
     @FXML private Button exitBtn;
     @FXML private Button reportsBtn;
+    @FXML private Label userName;
 
+
+    @FXML public void initialize() {
+        String userNameVal;
+        userNameVal = LoginController.getUserName();
+        userName.setText(userNameVal);
+    }
     /**
      * quits the app
      */

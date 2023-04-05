@@ -130,6 +130,7 @@ public class LoginController {
 
         //set user
         user.setUserId(userId);
+        user.setUserName(usernameInput.getText());
 
         //log to documents
         logLoginAttempt(user,true);
@@ -145,6 +146,10 @@ public class LoginController {
                 event
         );
 
+    }
+
+    public static String getUserName() {
+        return User.getUserName();
     }
 
     /**

@@ -15,8 +15,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * displays auto-generated reports
@@ -70,6 +73,7 @@ public class ReportsPageController {
     @FXML private TableColumn<?, ?> title1;
     @FXML private TableColumn<?, ?> type1;
     @FXML private TableColumn<?, ?> userID1;
+    @FXML private Button saveReportBtn;
 
     /**
      * setup the page
@@ -110,6 +114,38 @@ public class ReportsPageController {
             System.out.println("Error getting contacts");
         }
     }
+
+    public void saveReport() {
+        // create file
+        String fileName = "schedule.txt";
+        try {
+            FileWriter fileWriter = new FileWriter(fileName);
+
+            // write each appointment to file
+            for (Appointment appointment : appointmentObservableList) {
+                String line = String.format(
+                        "Appointment ID: %d, Title: %s, Description: %s, Location: %s, Contact: %s, Type: %s, Start Time: %s, End Time: %s, Customer ID: %d, User ID: %d",
+                        appointment.getAppointmentId(),
+                        appointment.getTitle(),
+                        appointment.getDescription(),
+                        appointment.getLocation(),
+                        appointment.getContact(),
+                        appointment.getType(),
+                        appointment.getStartDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                        appointment.getEndDateTime().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                        appointment.getCustomerId(),
+                        appointment.getUserId()
+                );
+                fileWriter.write(line + System.lineSeparator());
+            }
+
+            fileWriter.close();
+            System.out.println("Report saved to file " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+
 
     /**
      * constructor

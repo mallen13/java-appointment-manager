@@ -13,8 +13,8 @@
    <children>
       <TableView fx:id="recordsTable" layoutX="88.0" layoutY="502.0" prefHeight="200.0" prefWidth="887.0">
         <columns>
-          <TableColumn fx:id="custID" prefWidth="84.0" text="Customer ID" />
-          <TableColumn fx:id="custName" prefWidth="154.0" text="Customer Name" />
+          <TableColumn fx:id="custID" prefWidth="84.0" text="Patient ID" />
+          <TableColumn fx:id="custName" prefWidth="154.0" text="Patient Name" />
             <TableColumn fx:id="address" prefWidth="137.0" text="Address" />
             <TableColumn fx:id="postalCode" minWidth="0.0" prefWidth="133.0" text="Postal Code" />
             <TableColumn fx:id="phoneNum" prefWidth="101.0" text="Phone Number" />
@@ -35,17 +35,17 @@
       <Button fx:id="clearBtn" layoutX="621.0" layoutY="413.0" mnemonicParsing="false" onAction="#clearRecord" text="Clear" />
       <Button fx:id="modifyBtn" disable="true" layoutX="461.0" layoutY="413.0" mnemonicParsing="false" onAction="#modifyRecord" text="Modify" />
       <Button fx:id="deleteBtn" disable="true" layoutX="547.0" layoutY="413.0" mnemonicParsing="false" onAction="#deleteRecord" text="Delete" />
-      <Label layoutX="476.0" layoutY="40.0" text="Customers">
+      <Label layoutX="476.0" layoutY="40.0" text="Patients">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
       <ComboBox fx:id="stateDropdown" layoutX="335.0" layoutY="318.0" prefHeight="25.0" prefWidth="161.0" promptText="Select A Value" />
       <Button fx:id="menuBtn" layoutX="73.0" layoutY="39.0" mnemonicParsing="false" onAction="#loadMenu" text="Main Menu" />
-      <Label layoutX="212.0" layoutY="122.0" prefHeight="17.0" prefWidth="96.0" text="Customer ID" />
+      <Label layoutX="212.0" layoutY="122.0" prefHeight="17.0" prefWidth="96.0" text="Patient ID" />
       <TextField fx:id="idInput" disable="true" layoutX="333.0" layoutY="118.0" />
-      <Label layoutX="283.0" layoutY="418.0" prefHeight="17.0" prefWidth="55.0" text="Records:" />
-      <TextField fx:id="phoneNumberInput" layoutX="335.0" layoutY="274.0" />
+      <Label layoutX="105.0" layoutY="464.0" prefHeight="17.0" prefWidth="55.0" text="Search:" />
+      <TextField fx:id="searchInput" layoutX="174.0" layoutY="460.0" onKeyTyped="#searchPatients" />
       <ComboBox fx:id="countryInput" layoutX="598.0" layoutY="318.0" prefHeight="25.0" prefWidth="161.0" promptText="Select A Value" />
    </children>
 </AnchorPane>

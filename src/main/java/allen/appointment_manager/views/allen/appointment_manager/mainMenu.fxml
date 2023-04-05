@@ -5,10 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.MainMenuController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allen.appointment_manager.controllers.MainMenuController">
    <children>
-      <Button fx:id="customersBtn" layoutX="74.0" layoutY="173.0" mnemonicParsing="false" onAction="#showCustomersPage" prefHeight="38.0" prefWidth="92.0" text="Customers" />
+      <Button fx:id="customersBtn" layoutX="74.0" layoutY="173.0" mnemonicParsing="false" onAction="#showCustomersPage" prefHeight="38.0" prefWidth="92.0" text="Patients" />
       <Button fx:id="appointmentsBtn" layoutX="239.0" layoutY="173.0" mnemonicParsing="false" onAction="#showAppointmentsPage" prefHeight="38.0" prefWidth="105.0" text="Appointments" />
       <Button fx:id="reportsBtn" layoutX="415.0" layoutY="173.0" mnemonicParsing="false" onAction="#showReportsPage" prefHeight="38.0" prefWidth="92.0" text="Reports" />
       <Label layoutX="269.0" layoutY="72.0" prefHeight="23.0" prefWidth="46.0" text="Menu">
@@ -17,5 +16,7 @@
          </font>
       </Label>
       <Button fx:id="exitBtn" layoutX="415.0" layoutY="335.0" mnemonicParsing="false" onAction="#exitApp" prefHeight="38.0" prefWidth="105.0" text="Sign Out &amp; Exit" />
+      <Label layoutX="193.0" layoutY="118.0" text="Logged In As: " />
+      <Label fx:id="userName" layoutX="278.0" layoutY="118.0" />
    </children>
 </AnchorPane>

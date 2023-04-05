@@ -11,7 +11,7 @@ Application features include:
 - appointments page that displays in the users local time zone
 - backend MySQL database that stores data in UTC, then converts to users time in UI
 
-Additional Features:
+## Additional Features:
 - various alerts for input and login validations
 - upcoming appointment notifications
 - ensuring no customers deleted with active appointments 
@@ -20,8 +20,9 @@ Additional Features:
 ## Author
 - Author: Matthew Allen
 - Contact Information: mall671@wgu.edu
-- Student Application Version: 1.0
-- Date: 3/1/2023
+- Student Application Version: 2.0
+- Created Date: 3/1/2023
+- Last update Date: 4/5/23
 
 ## Dev Software Versions
 - IDE: IntelliJ Community Version 2021.1.3
@@ -47,7 +48,7 @@ MySQL Connector Driver Version: mysql-connector-java-8.0.25
 
 ### Login Page:
 
-![loginPage](https://github.com/mallen13/java-appointment-manager/blob/master/appointmentsPage.PNG)
+![loginPage](https://github.com/mallen13/java-appointment-manager/blob/master/loginPage.PNG)
 
 
 ### Customers Page:
